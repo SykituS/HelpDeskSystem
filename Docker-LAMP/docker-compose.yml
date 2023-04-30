@@ -3,9 +3,9 @@ services:
   db:
     image: mysql:latest
     environment:
-      MYSQL_DATABASE: lamp_docker
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: admin
+      MYSQL_DATABASE: HelpDesk
+      MYSQL_USER: lamp_docker
+      MYSQL_PASSWORD: lamp_docker
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
     volumes:
       - "./DataBase:/docker-entrypoint-initdb.d"

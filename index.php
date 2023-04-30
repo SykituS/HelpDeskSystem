@@ -1,10 +1,10 @@
 <?php
 
-require 'connection.php';
+require 'conn.php';
 
 $query = 'SELECT * FROM blog';
 
-$result = mysqli_query($context, $query);
+$result = $context->query($query);
 
 echo '<h1>MySql Content:</h1>';
 
