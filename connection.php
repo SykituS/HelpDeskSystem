@@ -1,8 +1,8 @@
 <?php
 
 $server = "localhost";
-$user = "lamp_docker";
-$password = "password";
+$user = "admin";
+$password = "admin";
 $DbName = "lamp_docker";
 
 $context = new mysqli($server, $user, $password, $DbName);
