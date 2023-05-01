@@ -44,7 +44,7 @@ class Users extends Database {
                         $_SESSION["Role"] = 3; //Logged as user
                         break;
                 }
-                header("location: ticket.php"); 		
+                header("location: ../Tickets/ticket.php"); 		
 
             } else {
                 $errorMessage = "Invalid login";
@@ -56,6 +56,16 @@ class Users extends Database {
 
         return $errorMessage;
     }
+
+    public function getUserInfo() {
+		if(!empty($_SESSION["userid"])) {
+			$sqlQuery = "SELECT * FROM ".$this->userTable." 
+				WHERE id ='".$_SESSION["UserId"]."'";
+			$result = mysqli_query($this->context, $sqlQuery);		
+			$userDetails = mysqli_fetch_assoc($result);
+			return $userDetails;
+		}		
+	}
 }
 
 ?>

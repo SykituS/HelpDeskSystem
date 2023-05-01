@@ -1,10 +1,10 @@
 <?php 
-include 'init.php';
+include 'Configuration/init.php';
 
 if(!$users->IsLoggedIn()) {
-    header("Location: Login.php");
+    header("Location: Pages/Account/Login.php");
 } else {
-    header("Location: Ticket.php");
+    header("Location: Pages/Tickets/Ticket.php");
 }
 include('Includes/Header.php');
 //$user = $users->getUserInfo();
