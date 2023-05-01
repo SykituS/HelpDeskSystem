@@ -1,13 +1,15 @@
 <?php 
 session_start();
-include 'config.php';
+include 'Config.php';
 
 define("Host" , $host);
 define("User" , $user);
 define("Password" , $password);
 define("Database" , $database);
 
-require 'class/Database.php';
+require 'Class/Database.php';
+require 'Class/Users.php';
 
 $database = new Database;
+$users = new Users;
 ?>

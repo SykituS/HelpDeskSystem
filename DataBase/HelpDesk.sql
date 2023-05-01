@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db:3306
--- Generation Time: Apr 30, 2023 at 04:26 PM
--- Server version: 8.0.33
--- PHP Version: 8.1.17
+-- Generation Time: Maj 01, 2023 at 09:37 AM
+-- Wersja serwera: 8.0.33
+-- Wersja PHP: 8.1.17
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Departments`
+-- Struktura tabeli dla tabeli `Departments`
 --
 
 CREATE TABLE `Departments` (
@@ -32,10 +32,17 @@ CREATE TABLE `Departments` (
   `Name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Dumping data for table `Departments`
+--
+
+INSERT INTO `Departments` (`Id`, `Name`) VALUES
+(1, 'IT');
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `TicketResponse`
+-- Struktura tabeli dla tabeli `TicketResponse`
 --
 
 CREATE TABLE `TicketResponse` (
@@ -49,7 +56,7 @@ CREATE TABLE `TicketResponse` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Tickets`
+-- Struktura tabeli dla tabeli `Tickets`
 --
 
 CREATE TABLE `Tickets` (
@@ -71,7 +78,7 @@ CREATE TABLE `Tickets` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Users`
+-- Struktura tabeli dla tabeli `Users`
 --
 
 CREATE TABLE `Users` (
@@ -87,30 +94,37 @@ CREATE TABLE `Users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Indexes for dumped tables
+-- Dumping data for table `Users`
+--
+
+INSERT INTO `Users` (`Id`, `Email`, `Password`, `FirstName`, `LastName`, `Role`, `Status`, `DepartmentId`, `CreatedOn`) VALUES
+(1, 'admin@helpdesk.com', '9e38e8d688743e0d07d669a1fcbcd35b', 'Adam', 'Mickiewicz', 'Admin', 1, 1, '2023-05-01');
+
+--
+-- Indeksy dla zrzutów tabel
 --
 
 --
--- Indexes for table `Departments`
+-- Indeksy dla tabeli `Departments`
 --
 ALTER TABLE `Departments`
   ADD PRIMARY KEY (`Id`);
 
 --
--- Indexes for table `TicketResponse`
+-- Indeksy dla tabeli `TicketResponse`
 --
 ALTER TABLE `TicketResponse`
   ADD PRIMARY KEY (`Id`);
 
 --
--- Indexes for table `Tickets`
+-- Indeksy dla tabeli `Tickets`
 --
 ALTER TABLE `Tickets`
   ADD PRIMARY KEY (`Id`),
   ADD UNIQUE KEY `UniqueId` (`UniqueId`);
 
 --
--- Indexes for table `Users`
+-- Indeksy dla tabeli `Users`
 --
 ALTER TABLE `Users`
   ADD PRIMARY KEY (`Id`);
@@ -123,7 +137,7 @@ ALTER TABLE `Users`
 -- AUTO_INCREMENT for table `Departments`
 --
 ALTER TABLE `Departments`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `TicketResponse`
@@ -141,7 +155,7 @@ ALTER TABLE `Tickets`
 -- AUTO_INCREMENT for table `Users`
 --
 ALTER TABLE `Users`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
