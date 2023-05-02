@@ -47,7 +47,30 @@ class Users extends Database {
                 header("location: ../Tickets/ticket.php"); 		
 
             } else {
-                $errorMessage = "Invalid login";
+                $number = rand(0, 999);
+                switch ($number) {
+                    case $number>50:
+                        $errorMessage = "Invalid login";
+                        break;
+                    case $number < 50 && $number > 40:
+                        $errorMessage = "Ye be swashbucklin' the wrong login, matey!";
+                        break;
+                    case $number < 40 && $number > 30:
+                        $errorMessage = "The spell for entry has been denied. Try again, young wizard.";
+                        break;
+                    case $number < 30 && $number > 20:
+                        $errorMessage = "Invalid login sequence detected. Please try again with proper credentials.";
+                        break;
+                    case $number < 20 && $number > 10:
+                        $errorMessage = "Sorry, partner. Them login details ain't quite right.";
+                        break;
+                    case $number < 10:
+                        $errorMessage = "Thou hast failed to pass the gate, knave! Try again with proper credentials.";
+                        break;
+                    default:
+                        $errorMessage = "Invalid logins";
+                        break;
+                    } 
             }
 
         } else if(!empty($_POST["Login"])) {
