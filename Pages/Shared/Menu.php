@@ -18,9 +18,9 @@
 							</div>
 						</a>
 					</li>
-					<?php if($_SESSION["Role"] == "Admin") /*Check if user is admin*/ { ?> 
+					<?php if($users->HaveAdminPermissions()) { ?> 
 					<li class="nav-item">
-						<a class="nav-link" href="#">
+						<a class="nav-link" href="/Pages//Departments/DeparmentsList.php">
 							<div class="icon-container">
 								<span title="Departments"><i class="icon-icon" data-feather="grid"></i></span>
 								<span class="icon-text">Departments</span>
@@ -28,7 +28,7 @@
 						</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">
+						<a class="nav-link" href="/Pages/Users/UsersList.php">
 						<div class="icon-container">
 								<span title="Users"><i data-feather="users"></i></span>
 								<span class="icon-text">Users</span>
@@ -37,7 +37,7 @@
 					</li>
 					<?php } ?>	
 					<li class="nav-item">
-						<a class="nav-link" href="#">
+						<a class="nav-link" href="/Pages/Tickets/TicketsList.php">
 							<div class="icon-container">
 								<span title="Tickets"><i data-feather="list"></i></span>
 								<span class="icon-text">Tickets</span>

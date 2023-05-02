@@ -16,6 +16,34 @@ class Users extends Database {
         }
     }
 
+    public function HaveUserPermissions(){
+        if(isset($_SESSION["Role"])){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function HaveHelpDeskPermissions(){
+        if(isset($_SESSION["Role"])) {
+            if ($_SESSION["Role"] == "HelpDesk") {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function HaveAdminPermissions(){
+        if(isset($_SESSION["Role"])) {
+            if ($_SESSION["Role"] == "Admin") {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function Login(){
         $errorMessage = '';
         
@@ -33,7 +61,7 @@ class Users extends Database {
                 $_SESSION["UserFirstName"] = $userDetails["FirstName"];
                 $_SESSION["UserLastName"] = $userDetails["LastName"];
                 $_SESSION["Role"] = $userDetails["Role"];
-                header("location: ../Tickets/ticket.php"); 		
+                header("location: ../Tickets/TicketsList.php"); 		
 
             } else {
                 $number = rand(0, 999);

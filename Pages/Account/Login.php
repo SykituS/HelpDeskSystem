@@ -2,7 +2,7 @@
 include ($_SERVER['DOCUMENT_ROOT'].'/Configuration/Init.php');
 
 if($users->isLoggedIn()) {
-	header('Location: /Pages/Tickets/Ticket.php');
+	header('Location: /Pages/Tickets/TicketsList.php');
 }
 
 $errorMessage = $users->Login();
