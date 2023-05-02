@@ -18,11 +18,11 @@
 							</div>
 						</a>
 					</li>
-					<?php if($_SESSION["Role"] == 1) /*Check if user is admin*/ { ?> 
+					<?php if($_SESSION["Role"] == "Admin") /*Check if user is admin*/ { ?> 
 					<li class="nav-item">
 						<a class="nav-link" href="#">
 							<div class="icon-container">
-								<span title="Departments"><i data-feather="grid"></i></span>
+								<span title="Departments"><i class="icon-icon" data-feather="grid"></i></span>
 								<span class="icon-text">Departments</span>
 							</div>
 						</a>

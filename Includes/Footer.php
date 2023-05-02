@@ -1,8 +1,10 @@
-<div class="insert-post-ads1" style="margin-top:20px;">
+<!-- Closing tag for container -->
+</div>
 
-</div>
-</div>
-<script>
-      feather.replace()
-    </script>
-</body></html>
+
+<!-- JS functions -->
+  <script>
+    feather.replace()
+  </script>
+</body>
+</html>

@@ -32,18 +32,7 @@ class Users extends Database {
                 $_SESSION["UserId"] = $userDetails["Id"];
                 $_SESSION["UserFirstName"] = $userDetails["FirstName"];
                 $_SESSION["UserLastName"] = $userDetails["LastName"];
-
-                switch($userDetails["Role"]) {
-                    case "Admin":
-                        $_SESSION["Role"] = Role::Admin; //Logged as admin
-                        break;
-                    case "HelpDesk":
-                        $_SESSION["Role"] = Role::HelpDesk; //Logged as helpdesk
-                        break;
-                    case "User":
-                        $_SESSION["Role"] = Role::User; //Logged as user
-                        break;
-                }
+                $_SESSION["Role"] = $userDetails["Role"];
                 header("location: ../Tickets/ticket.php"); 		
 
             } else {
