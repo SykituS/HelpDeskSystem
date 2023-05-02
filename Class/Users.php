@@ -35,13 +35,13 @@ class Users extends Database {
 
                 switch($userDetails["Role"]) {
                     case "Admin":
-                        $_SESSION["Role"] = 1; //Logged as admin
+                        $_SESSION["Role"] = Role::Admin; //Logged as admin
                         break;
                     case "HelpDesk":
-                        $_SESSION["Role"] = 2; //Logged as helpdesk
+                        $_SESSION["Role"] = Role::HelpDesk; //Logged as helpdesk
                         break;
                     case "User":
-                        $_SESSION["Role"] = 3; //Logged as user
+                        $_SESSION["Role"] = Role::User; //Logged as user
                         break;
                 }
                 header("location: ../Tickets/ticket.php"); 		
@@ -65,7 +65,6 @@ class Users extends Database {
 			$userDetails = mysqli_fetch_assoc($result);
 			return $userDetails;
 		}		
-	}
+	} 
 }
-
 ?>

@@ -6,11 +6,12 @@ if(!$users->isLoggedIn()) {
 }
 
 include($_SERVER['DOCUMENT_ROOT'].'/Includes/Header.php');
+include($_SERVER['DOCUMENT_ROOT'].'/Pages/Shared/Menu.php');
 include($_SERVER['DOCUMENT_ROOT'].'/Includes/Container.php');
 ?>
 
+<?php  ?>	
 <div class="container">
-<?php include($_SERVER['DOCUMENT_ROOT'].'/Pages/Shared/Menu.php'); ?>	
     <div class="row">
         <div class="col-md-12"></div>
     </div>
