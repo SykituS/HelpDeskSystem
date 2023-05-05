@@ -1,11 +1,10 @@
-  <footer class="py-3 my-4">
-    <div class="border-bottom pb-3 mb-3"></div>
-    <p class="text-center text-muted">&copy; 2023 HelpDesk System</p>
-  </footer>
   
 <!-- Closing tag for container -->
 </div>
-
+<footer class="footer mt-auto py-3">
+    <div class="border-bottom pb-3 mb-3"></div>
+    <p class="text-center text-muted">&copy; 2023 HelpDesk System</p>
+  </footer>
 <!-- JS functions -->
   <script>
     feather.replace()

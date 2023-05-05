@@ -25,7 +25,7 @@ include($_SERVER['DOCUMENT_ROOT'].'/Pages/Shared/Menu.php');
                         <nav>
                             <ul class="pagination justify-content-center">
                                 <?php 
-                                    $pageInfo = $users->retrivePageInformations();
+                                    $pageInfo = $users->retrivePageInformations($users->userTable);
                                     $isOnFirstPage = ($pageInfo[3] == 1) ? 'disabled' : '';
                                     $isOnLastPage = ($pageInfo[3] == $pageInfo[1]) ? 'disabled' : '';
                                     echo '
@@ -33,10 +33,14 @@ include($_SERVER['DOCUMENT_ROOT'].'/Pages/Shared/Menu.php');
                                         <a class="page-link" href="?Page='.($pageInfo[3] - 1).'">Previous</a>
                                     </li>
                                     ';
-                                    for ($i = 1; $i <= $pageInfo[1]; $i++)
+
+                                    $start = max(1, $pageInfo[3] - 2);
+                                    $end = min($start + 4, $pageInfo[1]);
+
+                                    for ($i = $start; $i <= $end; $i++)
                                     {
-                                        $isPageActive = ($i == $pageInfo[3]) ? 'active' : '';
-                                        echo '<li class="page-item"><a class="page-link" href="?Page='.$i.'">'.$i.'</a></li>';
+                                        $isPageActive = ($i == $pageInfo[3]) ? 'disabled' : '';
+                                        echo '<li class="page-item"><a class="page-link '.$isPageActive.'" href="?Page='.$i.'">'.$i.'</a></li>';
                                     }
                                     echo '
                                     <li class="page-item">
@@ -45,6 +49,9 @@ include($_SERVER['DOCUMENT_ROOT'].'/Pages/Shared/Menu.php');
                                     ';
                                     ?>
                             </ul>
+                            <div class="text-end">
+                                <a href="/Pages//Users/CreateNewUser.php" class="btn btn-outline-primary">Add new user</a>
+                            </div>
                         </nav>
                     </div>
                     <table class="table table-hover" id="accordion">
@@ -52,7 +59,7 @@ include($_SERVER['DOCUMENT_ROOT'].'/Pages/Shared/Menu.php');
                             <tr>
                                 <th>Name</th>
                                 <th>Email</th>
-                                <th>Department</th>
+                                <th class="text-center">Department</th>
                                 <th>Role</th>
                                 <th>IsActive</th>
                                 <th>&nbsp;</th>
@@ -63,15 +70,19 @@ include($_SERVER['DOCUMENT_ROOT'].'/Pages/Shared/Menu.php');
                                 $userData = $users->getListOfUsers();
                                 $numerator = 0;
                                 foreach($userData as $value){
+                                    $isActiveBtn = $value[5] ? 
+                                    '<button id='.$value[0].' type="button" class="btn btn-outline-danger btn-sm"><span class="fw-bold">Disable</span></button>' : 
+                                    '<button id='.$value[0].' type="button" class="btn btn-outline-success btn-sm"><span class="fw-bold">Enable</span></button>';
+                                    
                                     echo '
                                     <div class="accordion-item">
                                         <tr class="accordion-header" data-bs-toggle="collapse" data-bs-target="#collapse'.$numerator.'" aria-expanded="true" aria-controls="collapse'.$numerator.'">
                                         <td>'.$value[1].'</td>
                                         <td>'.$value[2].'</td>
-                                        <td>'.$value[3].'</td>
+                                        <td class="text-center">'.$value[3].'</td>
                                         <td>'.$value[4].'</td>
                                         <td>'.$value[5].'</td>
-                                        <td >
+                                        <td class="text-end pe-3">
                                             <div class="icon-container">
                                                 <span ><i class="icon-icon" data-feather="menu"></i></span>
                                                 <span class="badge bg-secondary icon-text">Actions</span>
@@ -81,10 +92,9 @@ include($_SERVER['DOCUMENT_ROOT'].'/Pages/Shared/Menu.php');
                                             <td class="accordion-body" colspan="6">
                                                 <div class="card text-center">
                                                     <div class="card-body bg-secondary " style="--bs-bg-opacity: .05;">
-                                                        <button id='.$value[0].' type="button" class="btn btn-outline-primary btn-sm"><span class="fw-bold">Edit</span></button>
-                                                        <button id='.$value[0].' type="button" class="btn btn-outline-warning btn-sm"><span class="fw-bold">Disable</span></button>
-                                                        <button id='.$value[0].' type="button" class="btn btn-outline-danger btn-sm"><span class="fw-bold">Remove</span></button>
                                                         <button id='.$value[0].' type="button" class="btn btn-outline-info btn-sm"><span class="fw-bold">Details</span></button>
+                                                        <button id='.$value[0].' type="button" class="btn btn-outline-primary btn-sm"><span class="fw-bold">Edit</span></button>
+                                                        '.$isActiveBtn.'
                                                     </div>
                                                 </div>
                                             </td>
@@ -101,4 +111,5 @@ include($_SERVER['DOCUMENT_ROOT'].'/Pages/Shared/Menu.php');
         </div>
     </div>
 </div>
+
 <?php include($_SERVER['DOCUMENT_ROOT'].'/Includes/Footer.php');?>

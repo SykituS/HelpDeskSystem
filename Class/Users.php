@@ -1,8 +1,6 @@
 <?php 
 
 class Users extends Database {
-    private $userTable = "Users";
-    private $departmentTable = "Departments";
     private $context = false;
 
     public function __construct(){
@@ -49,7 +47,7 @@ class Users extends Database {
         $errorMessage = '';
         
         if(!empty($_POST["Login"]) && $_POST["Email"] != '' && $_POST["Password"] != '') {
-            $email = $_POST["Email"];
+            $email = strip_tags($_POST["Email"]);
             $password = $_POST["Password"];
             $sqlQuery = "SELECT * FROM ".$this->userTable."
                             WHERE email='".$email."' AND password='".md5($password)."' AND status = 1";
@@ -108,43 +106,12 @@ class Users extends Database {
 		}		
 	} 
 
-    public function retrivePageInformations() {
-        $recordsPerPage = 25;
-
-        $sqlQuery = "SELECT * FROM ".$this->userTable;
-
-        $result = mysqli_query($this->context, $sqlQuery);
-
-        $totalRecords = mysqli_num_rows($result);
-        $totalPage = ceil($totalRecords/$recordsPerPage);
-        
-        $currentPage = isset($_GET["Page"]) ? $_GET["Page"] : 1;
-        $offset = ($currentPage - 1) * $recordsPerPage;
-
-        $pageInformation = array();
-
-        $pageInformation[] = $totalRecords; // 0 - TotalRecords
-        $pageInformation[] = $totalPage; // 1 - Total Page
-        $pageInformation[] = $offset; // 2 - Offset
-        $pageInformation[] = $currentPage; // 3 - Current Page
-
-        return $pageInformation;
-    }
-
     public function getListOfUsers() {
-        $recordsPerPage = 25;
-        $pageInfo = $this->retrivePageInformations();
+        $pageInfo = $this->retrivePageInformations($this->userTable);
 
         $sqlQuery = "SELECT u.Id, u.Email, u.FirstName, u.LastName, u.Role, u.Status, dep.Name as DepartmentName
                         FROM ".$this->userTable." as u INNER JOIN ".$this->departmentTable." as dep 
-                        ON u.DepartmentId = dep.Id LIMIT ".$pageInfo[2].", ".$recordsPerPage;
-        /*if(!empty($_POST["Search"]["Value"])){
-
-        }
-        if($_POST["length"] != -1) {
-            $sqlQuery .= ' LIMIT '.$_POST['start'].', '.$_POST['length'];
-        }
-        */
+                        ON u.DepartmentId = dep.Id ORDER BY u.CreatedOn DESC LIMIT ".$pageInfo[2].", ".$this->recordsPerPage;
 
         $result = mysqli_query($this->context, $sqlQuery);
         $userData = array();
@@ -181,8 +148,43 @@ class Users extends Database {
 
             $userData[] = $userRows;
         }
-
         return $userData;
+    }
+
+    public function CreateNewUser() {
+        $errorMessage = '';
+
+        if(empty($_POST["CreateNewUser"])) {
+            return $errorMessage;
+        }
+
+        if($_POST["Email"] == '' || $_POST["FirstName"] == '' || $_POST["LastName"] == '' || $_POST["Role"] == '' || $_POST["Department"] <= 0)
+        {
+            return $errorMessage = 'Please provide valid data!';
+        }
+
+        $email = strip_tags($_POST["Email"]);
+        $firstName = strip_tags($_POST["FirstName"]);
+        $lastName = strip_tags($_POST["LastName"]);
+
+        $role = $_POST["Role"];
+        $department = $_POST["Department"];
+
+        $password = $_POST["Password"];
+        $confirmPassword = $_POST["ConfirmPassword"];
+        if ($password != $confirmPassword) {
+            return $errorMessage = 'Provided passwords is not the same';
+        }
+
+        $passwordHash = md5($password);
+        $createDate = date('Y-m-d H:i:s');
+        $sqlInsertQuery = "INSERT INTO ".$this->userTable."(Email, Password, FirstName, LastName, Role, Status, DepartmentId, CreatedOn) VALUES (
+            '".$email."', '".$passwordHash."', '".$firstName."', '".$lastName."', '".$role."', 1, ".$department.", '".$createDate."')";
+
+        mysqli_query($this->context, $sqlInsertQuery);
+        header("location: ../Users/UsersList.php"); 		
+        
+        return $errorMessage;
     }
 }
 ?>

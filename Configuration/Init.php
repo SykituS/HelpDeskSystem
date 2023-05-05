@@ -9,7 +9,9 @@ define("Database" , $database);
 
 require($_SERVER['DOCUMENT_ROOT'].'/Class/Database.php');
 require($_SERVER['DOCUMENT_ROOT'].'/Class/Users.php');
+require($_SERVER['DOCUMENT_ROOT'].'/Class/Departments.php');
 
 $database = new Database;
 $users = new Users;
+$depatments = new Departments;
 ?>

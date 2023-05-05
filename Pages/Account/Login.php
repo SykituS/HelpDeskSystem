@@ -27,13 +27,13 @@ include($_SERVER['DOCUMENT_ROOT'].'/Includes/Header.php');
                 <div class="form-floating">
                     <input type="Password" class="form-control" id="Password" name="Password" placeholder="Password" required>
                     <label for="Password">Password</label>
-                    </div>
                 </div>
             </div>
         </div>
+    </div>
         <div class="card-footer pt-4">
             <div class="d-grid col-4 mx-auto pb-3">
-                    <input type="submit" name="Login" value="Login" class="btn btn-outline-primary">
+                <input type="submit" name="Login" value="Login" class="btn btn-outline-primary">
             </div>
             <?php if ($errorMessage != '') { ?>
                 <div class="mt-5">
