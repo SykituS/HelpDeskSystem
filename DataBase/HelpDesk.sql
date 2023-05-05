@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db:3306
--- Generation Time: Maj 01, 2023 at 09:37 AM
+-- Generation Time: Maj 05, 2023 at 11:32 AM
 -- Wersja serwera: 8.0.33
 -- Wersja PHP: 8.1.17
 
@@ -98,7 +98,9 @@ CREATE TABLE `Users` (
 --
 
 INSERT INTO `Users` (`Id`, `Email`, `Password`, `FirstName`, `LastName`, `Role`, `Status`, `DepartmentId`, `CreatedOn`) VALUES
-(1, 'admin@helpdesk.com', '9e38e8d688743e0d07d669a1fcbcd35b', 'Adam', 'Mickiewicz', 'Admin', 1, 1, '2023-05-01');
+(1, 'admin@helpdesk.com', '9e38e8d688743e0d07d669a1fcbcd35b', 'Adam', 'Mickiewicz', 'Admin', 1, 1, '2023-05-01'),
+(2, 'test@test.com', '9e38e8d688743e0d07d669a1fcbcd35b', 'Janusz', 'Kowalski', 'HelpDesk', 1, 1, '2023-05-05'),
+(3, 'marian.kowalski@helpdesk.com', '9e38e8d688743e0d07d669a1fcbcd35b', 'Marian', 'Kowalski', 'User', 1, 1, '2023-05-05');
 
 --
 -- Indeksy dla zrzutów tabel
@@ -155,7 +157,7 @@ ALTER TABLE `Tickets`
 -- AUTO_INCREMENT for table `Users`
 --
 ALTER TABLE `Users`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
