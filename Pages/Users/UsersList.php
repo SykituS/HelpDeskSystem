@@ -24,15 +24,26 @@ include($_SERVER['DOCUMENT_ROOT'].'/Pages/Shared/Menu.php');
                     <div>
                         <nav>
                             <ul class="pagination justify-content-center">
-                                <li class="page-item disabled">
-                                    <a class="page-link">Previous</a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#1">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#2">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#3">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">Next</a>
-                                </li>
+                                <?php 
+                                    $pageInfo = $users->retrivePageInformations();
+                                    $isOnFirstPage = ($pageInfo[3] == 1) ? 'disabled' : '';
+                                    $isOnLastPage = ($pageInfo[3] == $pageInfo[1]) ? 'disabled' : '';
+                                    echo '
+                                    <li class="page-item '.$isOnFirstPage.'">
+                                        <a class="page-link" href="?Page='.($pageInfo[3] - 1).'">Previous</a>
+                                    </li>
+                                    ';
+                                    for ($i = 1; $i <= $pageInfo[1]; $i++)
+                                    {
+                                        $isPageActive = ($i == $pageInfo[3]) ? 'active' : '';
+                                        echo '<li class="page-item"><a class="page-link" href="?Page='.$i.'">'.$i.'</a></li>';
+                                    }
+                                    echo '
+                                    <li class="page-item">
+                                        <a class="page-link '.$isOnLastPage.'" href="?Page='.($pageInfo[3] + 1).'">Next</a>
+                                    </li>
+                                    ';
+                                    ?>
                             </ul>
                         </nav>
                     </div>
@@ -48,35 +59,41 @@ include($_SERVER['DOCUMENT_ROOT'].'/Pages/Shared/Menu.php');
                             </tr>
                         </thead>
                         <tbody>
-                            <div class="accordion-item">
-                                <tr class="accordion-header" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    <td>Testowy tester</td>
-                                    <td>Emailos@email.com</td>
-                                    <td>IT Department</td>
-                                    <td>Admin</td>
-                                    <td>
-                                        <span class="badge text-bg-success">True</span>
-                                    </td>
-                                    <td >
-                                        <div class="icon-container">
-                                            <span ><i class="icon-icon" data-feather="menu"></i></span>
-                                            <span class="badge bg-secondary icon-text">Actions</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                                    <td class="accordion-body" colspan="6">
-                                        <div class="card text-center">
-                                            <div class="card-body bg-secondary " style="--bs-bg-opacity: .05;">
-                                                <button type="button" class="btn btn-outline-primary btn-sm"><span class="fw-bold">Edit</span></button>
-                                                <button type="button" class="btn btn-outline-warning btn-sm"><span class="fw-bold">Disable</span></button>
-                                                <button type="button" class="btn btn-outline-danger btn-sm"><span class="fw-bold">Remove</span></button>
-                                                <button type="button" class="btn btn-outline-info btn-sm"><span class="fw-bold">Details</span></button>
+                            <?php 
+                                $userData = $users->getListOfUsers();
+                                $numerator = 0;
+                                foreach($userData as $value){
+                                    echo '
+                                    <div class="accordion-item">
+                                        <tr class="accordion-header" data-bs-toggle="collapse" data-bs-target="#collapse'.$numerator.'" aria-expanded="true" aria-controls="collapse'.$numerator.'">
+                                        <td>'.$value[1].'</td>
+                                        <td>'.$value[2].'</td>
+                                        <td>'.$value[3].'</td>
+                                        <td>'.$value[4].'</td>
+                                        <td>'.$value[5].'</td>
+                                        <td >
+                                            <div class="icon-container">
+                                                <span ><i class="icon-icon" data-feather="menu"></i></span>
+                                                <span class="badge bg-secondary icon-text">Actions</span>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </div>
+                                        </td>
+                                        <tr id="collapse'.$numerator.'" class="accordion-collapse collapse" data-bs-parent="#accordion">
+                                            <td class="accordion-body" colspan="6">
+                                                <div class="card text-center">
+                                                    <div class="card-body bg-secondary " style="--bs-bg-opacity: .05;">
+                                                        <button id='.$value[0].' type="button" class="btn btn-outline-primary btn-sm"><span class="fw-bold">Edit</span></button>
+                                                        <button id='.$value[0].' type="button" class="btn btn-outline-warning btn-sm"><span class="fw-bold">Disable</span></button>
+                                                        <button id='.$value[0].' type="button" class="btn btn-outline-danger btn-sm"><span class="fw-bold">Remove</span></button>
+                                                        <button id='.$value[0].' type="button" class="btn btn-outline-info btn-sm"><span class="fw-bold">Details</span></button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </div>
+                                    ';
+                                    $numerator++;
+                                }
+                            ?>
                         </tbody>
                     </table>
                 </div>
