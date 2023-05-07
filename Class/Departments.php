@@ -51,6 +51,28 @@ class Departments extends Database {
 
         return $departmentData;
     }
+
+    public function CreateNewDepartment() {
+        $errorMessage = '';
+
+        if(empty($_POST["CreateNewDepartment"])) {
+            return $errorMessage;
+        }
+
+        if($_POST["Department"] == '')
+        {
+            return $errorMessage = 'Please provide valid data!';
+        }
+
+        $name = strip_tags($_POST["Department"]);
+
+        $sqlInsertQuery = "INSERT INTO ".$this->departmentTable."(Name) VALUES ('".$name."')";
+
+        mysqli_query($this->context, $sqlInsertQuery);
+        header("location: ../Departments/DeparmentsList.php"); 		
+        
+        return $errorMessage;
+    }
 }
 
 ?>

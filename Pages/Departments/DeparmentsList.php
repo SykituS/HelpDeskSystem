@@ -49,6 +49,9 @@ include($_SERVER['DOCUMENT_ROOT'].'/Includes/Container.php');
                                     ';
                                     ?>
                             </ul>
+                            <div class="text-end">
+                                <a href="/Pages/Departments/CreateNewDepartment.php" class="btn btn-outline-primary">Create new department</a>
+                            </div>
                         </nav>
                     </div>
                     <table class="table table-hover" id="accordion">

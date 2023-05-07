@@ -56,11 +56,17 @@ class Users extends Database {
             $isLoginValid = mysqli_num_rows($results);
             if($isLoginValid) {
                 $userDetails = mysqli_fetch_assoc($results);
+
+                if($userDetails["Status"] != 1) {
+                    $errorMessage = "You account is disabled!";
+                    return $errorMessage;
+                }
+
                 $_SESSION["UserId"] = $userDetails["Id"];
                 $_SESSION["UserFirstName"] = $userDetails["FirstName"];
                 $_SESSION["UserLastName"] = $userDetails["LastName"];
                 $_SESSION["Role"] = $userDetails["Role"];
-                header("location: ../Tickets/TicketsList.php"); 		
+                header("location: ../MainPage/Main.php"); 		
 
             } else {
                 $number = rand(0, 999);
@@ -96,15 +102,10 @@ class Users extends Database {
         return $errorMessage;
     }
 
-    public function getUserInfo() {
-		if(!empty($_SESSION["userid"])) {
-			$sqlQuery = "SELECT * FROM ".$this->userTable." 
-				WHERE id ='".$_SESSION["UserId"]."'";
-			$result = mysqli_query($this->context, $sqlQuery);		
-			$userDetails = mysqli_fetch_assoc($result);
-			return $userDetails;
-		}		
-	} 
+    public function GetUserInfo() {
+        $numOpenedTicekts = 0;
+        $numClosedTicekts = 0;
+    }
 
     public function getListOfUsers() {
         $pageInfo = $this->retrivePageInformations($this->userTable);
@@ -118,13 +119,6 @@ class Users extends Database {
 
         while($user = mysqli_fetch_assoc($result)) {
             $userRows = array();
-            $status = '';
-
-            if($user["Status"] == 1) {
-                $status = '<span class="badge text-bg-success">True</span>';
-            } else {
-                $status = '<span class="badge text-bg-danger">True</span>';
-            }
 
             $userRole = '';
             switch ($user["Role"]) {
@@ -144,7 +138,7 @@ class Users extends Database {
             $userRows[] = $user["Email"];
             $userRows[] = $user["DepartmentName"];
             $userRows[] = $userRole;
-            $userRows[] = $status;
+            $userRows[] = $user["Status"];
 
             $userData[] = $userRows;
         }
@@ -185,6 +179,36 @@ class Users extends Database {
         header("location: ../Users/UsersList.php"); 		
         
         return $errorMessage;
+    }
+
+    public function IsActive($userId)
+    {
+        $sqlQuery = "SELECT Status FROM ".$this->userTable." WHERE `Id` = ".$userId;
+        $results = mysqli_query($this->context, $sqlQuery);
+        $userDetails = mysqli_fetch_assoc($results);
+        return $userDetails["Status"];
+    }
+
+    public function ChangeActiveStatusForUser($userId) {
+
+        $sqlUpdate = "UPDATE `Users` SET `Status`= not `Status` WHERE `Id` = ".$userId;
+        mysqli_query($this->context, $sqlUpdate);
+
+        // Get the updated status of the user
+        if ($this->IsActive($userId) == 0) {
+            $status = "False";
+        } else {
+            $status = "True";
+        }
+        // Prepare the response
+        $response = [
+            'status' => 'success',
+            'isActive' => $status
+        ];
+
+        // Return the response as JSON
+        header('Content-Type: application/json');
+        echo json_encode($response);
     }
 }
 ?>

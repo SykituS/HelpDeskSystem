@@ -11,7 +11,7 @@
 			<div class="collapse navbar-collapse">
 				<ul class="navbar-nav">
 					<li class="nav-item">
-						<a class="nav-link" href="#">
+						<a class="nav-link" href="/Pages/MainPage/Main.php">
 							<div class="icon-container">
 								<span title="home"><i data-feather="home"></i></span>
 								<span class="icon-text">Main menu</span>
