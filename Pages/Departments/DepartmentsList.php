@@ -12,6 +12,33 @@ if(!$users->HaveAdminPermissions()) {
 include($_SERVER['DOCUMENT_ROOT'].'/Includes/Header.php');
 include($_SERVER['DOCUMENT_ROOT'].'/Pages/Shared/Menu.php');
 include($_SERVER['DOCUMENT_ROOT'].'/Includes/Container.php');
+
+if (isset($_SESSION["SuccessMessage"])) {
+    // Display the toast message
+    echo '
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">    
+            <div class="toast-header">
+                <strong class="me-auto">Success</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                ' . $_SESSION["SuccessMessage"] . '
+            </div>
+        </div>
+    </div>';
+
+    // Clear the success message session variable
+    unset($_SESSION["SuccessMessage"]);
+
+    // Show the toast using JavaScript
+    echo '
+    <script>
+        var toastEl = document.querySelector(".toast");
+        var toast = new bootstrap.Toast(toastEl);
+        toast.show();
+    </script>';
+}
 ?>
 <div class="container mt-5">
     <div class="row">
@@ -82,8 +109,8 @@ include($_SERVER['DOCUMENT_ROOT'].'/Includes/Container.php');
                                             <td class="accordion-body" colspan="3">
                                                 <div class="card text-center">
                                                     <div class="card-body bg-secondary " style="--bs-bg-opacity: .05;">
-                                                        <button id='.$value[0].' type="button" class="btn btn-outline-info btn-sm"><span class="fw-bold">Details</span></button>
-                                                        <button id='.$value[0].' type="button" class="btn btn-outline-primary btn-sm"><span class="fw-bold">Edit</span></button>
+                                                        <a href="DepartmentDetails.php?Id='.$value[0].'" type="button" class="btn btn-outline-info btn-sm"><span class="fw-bold">Details</span></a>
+                                                        <a href="EditDepartment.php?Id='.$value[0].'" type="button" class="btn btn-outline-primary btn-sm"><span class="fw-bold">Edit</span></a>
                                                     </div>
                                                 </div>
                                             </td>

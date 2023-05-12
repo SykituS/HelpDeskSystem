@@ -5,6 +5,7 @@ class Database {
     //Tables name
     public $userTable = "Users";
     public $departmentTable = "Departments";
+    public $ticketsTable = "Tickets";
     
     //Pagination settings
     public $recordsPerPage = 15;

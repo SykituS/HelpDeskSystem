@@ -1,15 +1,15 @@
-<?php 
-include ($_SERVER['DOCUMENT_ROOT'].'/Configuration/Init.php');
+<?php
+include($_SERVER['DOCUMENT_ROOT'] . '/Configuration/Init.php');
 
-if(!$users->isLoggedIn()) {
-	header('Location: /Pages/Account/Login.php');
+if (!$users->isLoggedIn()) {
+    header('Location: /Pages/Account/Login.php');
 }
 
-$fullName = $_SESSION["UserFirstName"]." ".$_SESSION["UserLastName"];
+$fullName = $_SESSION["UserFirstName"] . " " . $_SESSION["UserLastName"];
 
-include($_SERVER['DOCUMENT_ROOT'].'/Includes/Header.php');
-include($_SERVER['DOCUMENT_ROOT'].'/Pages/Shared/Menu.php');
-include($_SERVER['DOCUMENT_ROOT'].'/Includes/Container.php');
+include($_SERVER['DOCUMENT_ROOT'] . '/Includes/Header.php');
+include($_SERVER['DOCUMENT_ROOT'] . '/Pages/Shared/Menu.php');
+include($_SERVER['DOCUMENT_ROOT'] . '/Includes/Container.php');
 ?>
 <div class="container mt-2 px-4 py-5">
     <div class="row">
@@ -27,7 +27,7 @@ include($_SERVER['DOCUMENT_ROOT'].'/Includes/Container.php');
                             <a href="/Pages/Tickets/CreateNewTicket.php" class="btn btn-primary">
                                 Create new ticket
                             </a>
-                        
+
                         </div>
                     </div>
                     <div class="col d-flex align-items-start">
@@ -58,7 +58,7 @@ include($_SERVER['DOCUMENT_ROOT'].'/Includes/Container.php');
                             <a href="/Pages/Tickets/CreateNewTicket.php" class="btn btn-primary">
                                 Check it out!
                             </a>
-                        
+
                         </div>
                     </div>
                     <div class="col d-flex align-items-start">
@@ -75,5 +75,4 @@ include($_SERVER['DOCUMENT_ROOT'].'/Includes/Container.php');
         </div>
     </div>
 </div>
-<?php include($_SERVER['DOCUMENT_ROOT'].'/Includes/Footer.php');?>
-
+<?php include($_SERVER['DOCUMENT_ROOT'] . '/Includes/Footer.php'); ?>

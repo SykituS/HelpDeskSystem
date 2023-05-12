@@ -102,9 +102,18 @@ class Users extends Database {
         return $errorMessage;
     }
 
-    public function GetUserInfo() {
+    public function GetLoggedUserInfo() {
         $numOpenedTicekts = 0;
         $numClosedTicekts = 0;
+    }
+
+    public function GetUserInfoById($Id) {
+        $sqlQuery = "SELECT * FROM ".$this->userTable." WHERE `Id` = ".$Id;
+
+        $result = mysqli_query($this->context, $sqlQuery);
+
+        $data = mysqli_fetch_assoc($result);
+        return $data;
     }
 
     public function getListOfUsers() {
@@ -209,6 +218,19 @@ class Users extends Database {
         // Return the response as JSON
         header('Content-Type: application/json');
         echo json_encode($response);
+    }
+
+    public function EditUser() {
+        $errorMessage = '';
+
+        if(empty($_POST["EditUser"])) {
+            return $errorMessage;
+        }
+        //TODO: Update user info
+        $_SESSION['SuccessMessage'] = "User updated successfully";
+        header("location: ../Users/UsersList.php"); 
+
+        return $errorMessage;
     }
 }
 ?>

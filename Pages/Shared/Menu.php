@@ -18,24 +18,32 @@
 							</div>
 						</a>
 					</li>
-					<?php if($users->HaveAdminPermissions()) { ?> 
-					<li class="nav-item">
-						<a class="nav-link" href="/Pages//Departments/DeparmentsList.php">
-							<div class="icon-container">
-								<span title="Departments"><i class="icon-icon" data-feather="grid"></i></span>
-								<span class="icon-text">Departments</span>
-							</div>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="/Pages/Users/UsersList.php">
-						<div class="icon-container">
-								<span title="Users"><i data-feather="users"></i></span>
-								<span class="icon-text">Users</span>
-							</div>
-						</a>
-					</li>
-					<?php } ?>	
+					<?php if ($users->HaveAdminPermissions()) { ?>
+						<li class="nav-item">
+							<a class="nav-link" href="/Pages/Departments/DepartmentsList.php">
+								<div class="icon-container">
+									<span title="Departments"><i class="icon-icon" data-feather="grid"></i></span>
+									<span class="icon-text">Departments</span>
+								</div>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="/Pages/Users/UsersList.php">
+								<div class="icon-container">
+									<span title="Users"><i data-feather="users"></i></span>
+									<span class="icon-text">Users</span>
+								</div>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="/Pages/Tickets/TicketsList.php">
+								<div class="icon-container">
+									<span title="Tickets"><i data-feather="list"></i></span>
+									<span class="icon-text">Helpdesk</span>
+								</div>
+							</a>
+						</li>
+					<?php } ?>
 					<li class="nav-item">
 						<a class="nav-link" href="/Pages/Tickets/TicketsList.php">
 							<div class="icon-container">
@@ -60,7 +68,7 @@
 							</div>
 						</a>
 					</li>
-					
+
 				</ul>
 			</div>
 		</div>

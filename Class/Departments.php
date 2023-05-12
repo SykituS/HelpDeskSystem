@@ -52,6 +52,15 @@ class Departments extends Database {
         return $departmentData;
     }
 
+    public function GetDepartmentInfoById($Id) {
+        $sqlQuery = "SELECT * FROM ".$this->departmentTable." WHERE `Id` = ".$Id;
+
+        $result = mysqli_query($this->context, $sqlQuery);
+
+        $data = mysqli_fetch_assoc($result);
+        return $data;
+    }
+
     public function CreateNewDepartment() {
         $errorMessage = '';
 
@@ -69,8 +78,21 @@ class Departments extends Database {
         $sqlInsertQuery = "INSERT INTO ".$this->departmentTable."(Name) VALUES ('".$name."')";
 
         mysqli_query($this->context, $sqlInsertQuery);
-        header("location: ../Departments/DeparmentsList.php"); 		
+        header("location: ../Departments/DepartmentsList.php"); 		
         
+        return $errorMessage;
+    }
+
+    public function EditDepartment() {
+        $errorMessage = '';
+
+        if(empty($_POST["EditDepartment"])) {
+            return $errorMessage;
+        }
+        //TODO: Update department info
+        $_SESSION['SuccessMessage'] = "Department updated successfully";
+        header("location: ../Departments/DepartmentsList.php"); 
+
         return $errorMessage;
     }
 }
