@@ -14,7 +14,7 @@ if (!isset($_GET["Id"]))
 
 
 $userDetails = $users->GetUserInfoById($_GET["Id"]);
-
+$styleForBorder = $userDetails["Status"] == 1 ? "border-primary" : "border-danger";
 include($_SERVER['DOCUMENT_ROOT'] . '/Includes/Header.php');
 include($_SERVER['DOCUMENT_ROOT'] . '/Includes/Container.php');
 include($_SERVER['DOCUMENT_ROOT'] . '/Pages/Shared/Menu.php');
@@ -32,42 +32,42 @@ include($_SERVER['DOCUMENT_ROOT'] . '/Pages/Shared/Menu.php');
                     <div class="row">
                         <div class="col-md-6">
                             <div class="d-flex">
-                                <div class="border-start border-primary border-3 pe-2"></div>
+                                <div class="border-start border-3 pe-2 <?php echo $styleForBorder ?>"></div>
                                 <div class="ms-3">
                                     <h4>Email</h4>
                                     <p><?php echo $userDetails["Email"]; ?></p>
                                 </div>
                             </div>
                             <div class="d-flex">
-                                <div class="border-start border-primary border-3 pe-2"></div>
+                                <div class="border-start border-3 pe-2 <?php echo $styleForBorder ?>"></div>
                                 <div class="ms-3">
                                     <h4>Fullname</h4>
                                     <p><?php echo $userDetails["FirstName"] . " " . $userDetails["LastName"]; ?></p>
                                 </div>
                             </div>
                             <div class="d-flex">
-                                <div class="border-start border-primary border-3 pe-2"></div>
+                                <div class="border-start border-3 pe-2 <?php echo $styleForBorder ?>"></div>
                                 <div class="ms-3">
-                                    <h4>Department</h4>
+                                    <h4>Role</h4>
                                     <p><?php echo $userDetails["Role"]; ?></p>
                                 </div>
                             </div>
                             <div class="d-flex">
-                                <div class="border-start border-primary border-3 pe-2"></div>
+                                <div class="border-start border-3 pe-2 <?php echo $styleForBorder ?>"></div>
                                 <div class="ms-3">
                                     <h4>Department</h4>
-                                    <p><?php echo $userDetails["Email"]; ?></p>
+                                    <p><?php echo $userDetails["DepartmentName"]; ?></p>
                                 </div>
                             </div>
                             <div class="d-flex">
-                                <div class="border-start border-primary border-3 pe-2"></div>
+                                <div class="border-start border-3 pe-2 <?php echo $styleForBorder ?>"></div>
                                 <div class="ms-3">
                                     <h4>Status</h4>
-                                    <p><?php echo $userDetails["Status"]; ?></p>
+                                    <p><?php echo $userDetails["Status"] == 1 ? "Active" : "Inactive"; ?></p>
                                 </div>
                             </div>
                             <div class="d-flex">
-                                <div class="border-start border-primary border-3 pe-2"></div>
+                                <div class="border-start border-3 pe-2 <?php echo $styleForBorder ?>"></div>
                                 <div class="ms-3">
                                     <h4>Created on:</h4>
                                     <p><?php echo $userDetails["CreatedOn"]; ?></p>

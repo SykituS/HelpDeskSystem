@@ -29,6 +29,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/Pages/Shared/Menu.php');
     </div>
     <div class="card-body">
         <form id="editDepartmentForm" class="form-horizontal" role="form" method="POST" action="">
+            <input type="hidden" name="Id" value="<?php echo $departmentDetails["Id"]; ?>" />
             <div class="text-center">
                 <div class="">
                     <div class="form-floating">

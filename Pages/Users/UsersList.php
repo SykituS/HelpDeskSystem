@@ -1,17 +1,17 @@
-<?php 
-include ($_SERVER['DOCUMENT_ROOT'].'/Configuration/Init.php');
+<?php
+include($_SERVER['DOCUMENT_ROOT'] . '/Configuration/Init.php');
 
-if(!$users->isLoggedIn()) {
-	header('Location: /Pages/Account/Login.php');
+if (!$users->isLoggedIn()) {
+    header('Location: /Pages/Account/Login.php');
 }
 
-if(!$users->HaveAdminPermissions()) {
-	header('Location: /Pages/Account/Login.php');
+if (!$users->HaveAdminPermissions()) {
+    header('Location: /Pages/Account/Login.php');
 }
 
-include($_SERVER['DOCUMENT_ROOT'].'/Includes/Header.php');
-include($_SERVER['DOCUMENT_ROOT'].'/Includes/Container.php');
-include($_SERVER['DOCUMENT_ROOT'].'/Pages/Shared/Menu.php');
+include($_SERVER['DOCUMENT_ROOT'] . '/Includes/Header.php');
+include($_SERVER['DOCUMENT_ROOT'] . '/Includes/Container.php');
+include($_SERVER['DOCUMENT_ROOT'] . '/Pages/Shared/Menu.php');
 
 if (isset($_SESSION["SuccessMessage"])) {
     // Display the toast message
@@ -51,30 +51,29 @@ if (isset($_SESSION["SuccessMessage"])) {
                     <div>
                         <nav>
                             <ul class="pagination justify-content-center">
-                                <?php 
-                                    $pageInfo = $users->retrivePageInformations($users->userTable);
-                                    $isOnFirstPage = ($pageInfo[3] == 1) ? 'disabled' : '';
-                                    $isOnLastPage = ($pageInfo[3] == $pageInfo[1]) ? 'disabled' : '';
-                                    echo '
-                                    <li class="page-item '.$isOnFirstPage.'">
-                                        <a class="page-link" href="?Page='.($pageInfo[3] - 1).'">Previous</a>
+                                <?php
+                                $pageInfo = $users->retrivePageInformations($users->userTable);
+                                $isOnFirstPage = ($pageInfo[3] == 1) ? 'disabled' : '';
+                                $isOnLastPage = ($pageInfo[3] == $pageInfo[1]) ? 'disabled' : '';
+                                echo '
+                                    <li class="page-item ' . $isOnFirstPage . '">
+                                        <a class="page-link" href="?Page=' . ($pageInfo[3] - 1) . '">Previous</a>
                                     </li>
                                     ';
 
-                                    $start = max(1, $pageInfo[3] - 2);
-                                    $end = min($start + 4, $pageInfo[1]);
+                                $start = max(1, $pageInfo[3] - 2);
+                                $end = min($start + 4, $pageInfo[1]);
 
-                                    for ($i = $start; $i <= $end; $i++)
-                                    {
-                                        $isPageActive = ($i == $pageInfo[3]) ? 'disabled' : '';
-                                        echo '<li class="page-item"><a class="page-link '.$isPageActive.'" href="?Page='.$i.'">'.$i.'</a></li>';
-                                    }
-                                    echo '
+                                for ($i = $start; $i <= $end; $i++) {
+                                    $isPageActive = ($i == $pageInfo[3]) ? 'disabled' : '';
+                                    echo '<li class="page-item"><a class="page-link ' . $isPageActive . '" href="?Page=' . $i . '">' . $i . '</a></li>';
+                                }
+                                echo '
                                     <li class="page-item">
-                                        <a class="page-link '.$isOnLastPage.'" href="?Page='.($pageInfo[3] + 1).'">Next</a>
+                                        <a class="page-link ' . $isOnLastPage . '" href="?Page=' . ($pageInfo[3] + 1) . '">Next</a>
                                     </li>
                                     ';
-                                    ?>
+                                ?>
                             </ul>
                             <div class="text-end">
                                 <a href="/Pages/Users/CreateNewUser.php" class="btn btn-outline-primary">Add new user</a>
@@ -93,39 +92,39 @@ if (isset($_SESSION["SuccessMessage"])) {
                             </tr>
                         </thead>
                         <tbody>
-                            <?php 
-                                $userData = $users->getListOfUsers();
-                                $numerator = 0;
-                                foreach($userData as $value){
-                                    $isActiveBtnClass = $value[5] ? 'btn btn-outline-danger btn-sm' : 'btn btn-outline-success btn-sm';
-                                    $isActiveBtnText = $value[5] ? 'Disable user' : 'Enable user';
+                            <?php
+                            $userData = $users->getListOfUsers();
+                            $numerator = 0;
+                            foreach ($userData as $value) {
+                                $isActiveBtnClass = $value[5] ? 'btn btn-outline-danger btn-sm' : 'btn btn-outline-success btn-sm';
+                                $isActiveBtnText = $value[5] ? 'Disable user' : 'Enable user';
 
-                                    $statusBadgeClass = $value[5] ? 'badge text-bg-success' : 'badge text-bg-danger';
-                                    $statusBadgeText = $value[5] ? 'True' : 'False';
-                                    
-                                    echo '
+                                $statusBadgeClass = $value[5] ? 'badge text-bg-success' : 'badge text-bg-danger';
+                                $statusBadgeText = $value[5] ? 'True' : 'False';
+                                $rowStyleClass = $value[5] ? '' : 'text-decoration-line-through fst-italic';
+                                echo '
                                     <div class="accordion-item">
-                                        <tr class="accordion-header" data-bs-toggle="collapse" data-bs-target="#collapse'.$numerator.'" aria-expanded="true" aria-controls="collapse'.$numerator.'">
-                                        <td>'.$value[1].'</td>
-                                        <td>'.$value[2].'</td>
-                                        <td class="text-center">'.$value[3].'</td>
-                                        <td>'.$value[4].'</td>
-                                        <td><span class="'.$statusBadgeClass.'" data-userId="'.$value[0].'">'.$statusBadgeText.'</td>
-                                        <td class="text-end pe-3">
-                                            <div class="icon-container">
-                                                <span ><i class="icon-icon" data-feather="menu"></i></span>
-                                                <span class="badge bg-secondary icon-text">Actions</span>
-                                            </div>
-                                        </td>
+                                        <tr class="accordion-header ' . $rowStyleClass . '" data-bs-toggle="collapse" data-bs-target="#collapse' . $numerator . '" aria-expanded="true" aria-controls="collapse' . $numerator . '" data-userId="' . $value[0] . '">
+                                            <td>' . $value[1] . '</td>
+                                            <td>' . $value[2] . '</td>
+                                            <td class="text-center">' . $value[3] . '</td>
+                                            <td>' . $value[4] . '</td>
+                                            <td><span class="' . $statusBadgeClass . '" data-userId="' . $value[0] . '">' . $statusBadgeText . '</td>
+                                            <td class="text-end pe-3">
+                                                <div class="icon-container">
+                                                    <span ><i class="icon-icon" data-feather="menu"></i></span>
+                                                    <span class="badge bg-secondary icon-text">Actions</span>
+                                                </div>
+                                            </td>
                                         </tr>
-                                        <tr id="collapse'.$numerator.'" class="accordion-collapse collapse" data-bs-parent="#accordion">
+                                        <tr id="collapse' . $numerator . '" class="accordion-collapse collapse" data-bs-parent="#accordion">
                                             <td class="accordion-body" colspan="6">
                                                 <div class="card text-center">
                                                     <div class="card-body bg-secondary " style="--bs-bg-opacity: .05;">
-                                                        <a href="UserDetails.php?Id='.$value[0].'" type="button" class="btn btn-outline-info btn-sm"><span class="fw-bold">Details</span></a>
-                                                        <a href="EditUser.php?Id='.$value[0].'" type="button" class="btn btn-outline-primary btn-sm"><span class="fw-bold">Edit</span></a>
-                                                        <button id="BtnChangeStatus" class="'.$isActiveBtnClass.'" data-userId="'.$value[0].'" onclick="changeStatus('.$value[0].')">
-                                                            <span class="fw-bold">'.$isActiveBtnText.'</span>
+                                                        <a href="UserDetails.php?Id=' . $value[0] . '" type="button" class="btn btn-outline-info btn-sm"><span class="fw-bold">Details</span></a>
+                                                        <a href="EditUser.php?Id=' . $value[0] . '" type="button" class="btn btn-outline-primary btn-sm"><span class="fw-bold">Edit</span></a>
+                                                        <button id="BtnChangeStatus" class="' . $isActiveBtnClass . '" data-userId="' . $value[0] . '" onclick="changeStatus(' . $value[0] . ')">
+                                                            <span class="fw-bold">' . $isActiveBtnText . '</span>
                                                         </button>
                                                     </div>
                                                 </div>
@@ -133,11 +132,11 @@ if (isset($_SESSION["SuccessMessage"])) {
                                         </tr>
                                     </div>
                                     ';
-                                    $numerator++;
-                                }
+                                $numerator++;
+                            }
                             ?>
 
-                            
+
                         </tbody>
                     </table>
                 </div>
@@ -147,38 +146,43 @@ if (isset($_SESSION["SuccessMessage"])) {
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-  function changeStatus(userId) {
-    $.ajax({
-      url: 'UsersAction.php',
-      type: 'GET',
-      data: { UserId: userId },
-      dataType: 'json',
-      cache: false,
-      success: function (response) {
-      if (response.status === 'success') {
-        console.log(response.isActive);
-        // Check the value of isActive
-        var button = $('button[data-userId="' + userId + '"]');
-        var badge = $('span[data-userId="' + userId + '"]');
-        if (response.isActive === "True") {
-          button.text("Disable user");
-          button.removeClass("btn-outline-success").addClass("btn-outline-danger");
+    function changeStatus(userId) {
+        $.ajax({
+            url: 'UsersAction.php',
+            type: 'GET',
+            data: {
+                UserId: userId
+            },
+            dataType: 'json',
+            cache: false,
+            success: function(response) {
+                if (response.status === 'success') {
+                    console.log(response.isActive);
+                    // Check the value of isActive
+                    var button = $('button[data-userId="' + userId + '"]');
+                    var badge = $('span[data-userId="' + userId + '"]');
+                    var tr = $('tr[data-userId="' + userId + '"]');
+                    if (response.isActive === "True") {
+                        button.text("Disable user");
+                        button.removeClass("btn-outline-success").addClass("btn-outline-danger");
 
-          badge.removeClass("badge text-bg-danger").addClass("badge text-bg-success").text("True");
-        } else {
-          button.text("Enable user");
-          button.removeClass("btn-outline-danger").addClass("btn-outline-success");
+                        badge.removeClass("badge text-bg-danger").addClass("badge text-bg-success").text("True");
+                        tr.removeClass("text-decoration-line-through fst-italic");
+                    } else {
+                        button.text("Enable user");
+                        button.removeClass("btn-outline-danger").addClass("btn-outline-success");
 
-          badge.removeClass("badge text-bg-success").addClass("badge text-bg-danger").text("False");
-        }
-      } else {
-        console.log('Error: ' + response.message);
-      }
-    },
-    error: function () {
-      console.log('AJAX request failed');
+                        badge.removeClass("badge text-bg-success").addClass("badge text-bg-danger").text("False");
+                        tr.addClass("text-decoration-line-through fst-italic");
+                    }
+                } else {
+                    console.log('Error: ' + response.message);
+                }
+            },
+            error: function() {
+                console.log('AJAX request failed');
+            }
+        });
     }
-    });
-  }
 </script>
-<?php include($_SERVER['DOCUMENT_ROOT'].'/Includes/Footer.php');?>
+<?php include($_SERVER['DOCUMENT_ROOT'] . '/Includes/Footer.php'); ?>

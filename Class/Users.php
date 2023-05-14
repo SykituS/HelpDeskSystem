@@ -1,30 +1,35 @@
-<?php 
+<?php
 
-class Users extends Database {
+class Users extends Database
+{
     private $context = false;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->context = $this->dbConnect();
     }
 
-    public function IsLoggedIn(){
-        if(isset($_SESSION["UserId"])) {
+    public function IsLoggedIn()
+    {
+        if (isset($_SESSION["UserId"])) {
             return true;
         } else {
             return false;
         }
     }
 
-    public function HaveUserPermissions(){
-        if(isset($_SESSION["Role"])){
+    public function HaveUserPermissions()
+    {
+        if (isset($_SESSION["Role"])) {
             return true;
         } else {
             return false;
         }
     }
 
-    public function HaveHelpDeskPermissions(){
-        if(isset($_SESSION["Role"])) {
+    public function HaveHelpDeskPermissions()
+    {
+        if (isset($_SESSION["Role"])) {
             if ($_SESSION["Role"] == "HelpDesk") {
                 return true;
             }
@@ -33,8 +38,9 @@ class Users extends Database {
         return false;
     }
 
-    public function HaveAdminPermissions(){
-        if(isset($_SESSION["Role"])) {
+    public function HaveAdminPermissions()
+    {
+        if (isset($_SESSION["Role"])) {
             if ($_SESSION["Role"] == "Admin") {
                 return true;
             }
@@ -43,21 +49,22 @@ class Users extends Database {
         return false;
     }
 
-    public function Login(){
+    public function Login()
+    {
         $errorMessage = '';
-        
-        if(!empty($_POST["Login"]) && $_POST["Email"] != '' && $_POST["Password"] != '') {
+
+        if (!empty($_POST["Login"]) && $_POST["Email"] != '' && $_POST["Password"] != '') {
             $email = strip_tags($_POST["Email"]);
             $password = $_POST["Password"];
-            $sqlQuery = "SELECT * FROM ".$this->userTable."
-                            WHERE email='".$email."' AND password='".md5($password)."' AND status = 1";
+            $sqlQuery = "SELECT * FROM " . $this->userTable . "
+                            WHERE email='" . $email . "' AND password='" . md5($password) . "' AND status = 1";
 
             $results = mysqli_query($this->context, $sqlQuery);
             $isLoginValid = mysqli_num_rows($results);
-            if($isLoginValid) {
+            if ($isLoginValid) {
                 $userDetails = mysqli_fetch_assoc($results);
 
-                if($userDetails["Status"] != 1) {
+                if ($userDetails["Status"] != 1) {
                     $errorMessage = "You account is disabled!";
                     return $errorMessage;
                 }
@@ -66,12 +73,11 @@ class Users extends Database {
                 $_SESSION["UserFirstName"] = $userDetails["FirstName"];
                 $_SESSION["UserLastName"] = $userDetails["LastName"];
                 $_SESSION["Role"] = $userDetails["Role"];
-                header("location: ../MainPage/Main.php"); 		
-
+                header("location: ../MainPage/Main.php");
             } else {
                 $number = rand(0, 999);
                 switch ($number) {
-                    case $number>50:
+                    case $number > 50:
                         $errorMessage = "Invalid login";
                         break;
                     case $number < 50 && $number > 40:
@@ -92,23 +98,24 @@ class Users extends Database {
                     default:
                         $errorMessage = "Invalid logins";
                         break;
-                    } 
+                }
             }
-
-        } else if(!empty($_POST["Login"])) {
+        } else if (!empty($_POST["Login"])) {
             $errorMessage = "Enter valid email address and password";
         }
 
         return $errorMessage;
     }
 
-    public function GetLoggedUserInfo() {
+    public function GetLoggedUserInfo()
+    {
         $numOpenedTicekts = 0;
         $numClosedTicekts = 0;
     }
 
-    public function GetUserInfoById($Id) {
-        $sqlQuery = "SELECT * FROM ".$this->userTable." WHERE `Id` = ".$Id;
+    public function GetUserInfoById($Id)
+    {
+        $sqlQuery = "SELECT u.*, dep.Name as DepartmentName FROM " . $this->userTable . " as u INNER JOIN " . $this->departmentTable . " as dep ON DepartmentId = dep.Id WHERE u.Id = " . $Id;
 
         $result = mysqli_query($this->context, $sqlQuery);
 
@@ -116,17 +123,18 @@ class Users extends Database {
         return $data;
     }
 
-    public function getListOfUsers() {
+    public function getListOfUsers()
+    {
         $pageInfo = $this->retrivePageInformations($this->userTable);
 
         $sqlQuery = "SELECT u.Id, u.Email, u.FirstName, u.LastName, u.Role, u.Status, dep.Name as DepartmentName
-                        FROM ".$this->userTable." as u INNER JOIN ".$this->departmentTable." as dep 
-                        ON u.DepartmentId = dep.Id ORDER BY u.CreatedOn DESC LIMIT ".$pageInfo[2].", ".$this->recordsPerPage;
+                        FROM " . $this->userTable . " as u INNER JOIN " . $this->departmentTable . " as dep 
+                        ON u.DepartmentId = dep.Id ORDER BY u.CreatedOn DESC LIMIT " . $pageInfo[2] . ", " . $this->recordsPerPage;
 
         $result = mysqli_query($this->context, $sqlQuery);
         $userData = array();
 
-        while($user = mysqli_fetch_assoc($result)) {
+        while ($user = mysqli_fetch_assoc($result)) {
             $userRows = array();
 
             $userRole = '';
@@ -143,7 +151,7 @@ class Users extends Database {
             }
 
             $userRows[] = $user["Id"];
-            $userRows[] = $user["FirstName"]." ".$user["LastName"];
+            $userRows[] = $user["FirstName"] . " " . $user["LastName"];
             $userRows[] = $user["Email"];
             $userRows[] = $user["DepartmentName"];
             $userRows[] = $userRole;
@@ -154,15 +162,15 @@ class Users extends Database {
         return $userData;
     }
 
-    public function CreateNewUser() {
+    public function CreateNewUser()
+    {
         $errorMessage = '';
 
-        if(empty($_POST["CreateNewUser"])) {
+        if (empty($_POST["CreateNewUser"])) {
             return $errorMessage;
         }
 
-        if($_POST["Email"] == '' || $_POST["FirstName"] == '' || $_POST["LastName"] == '' || $_POST["Role"] == '' || $_POST["Department"] <= 0)
-        {
+        if ($_POST["Email"] == '' || $_POST["FirstName"] == '' || $_POST["LastName"] == '' || $_POST["Role"] == '' || $_POST["Department"] <= 0) {
             return $errorMessage = 'Please provide valid data!';
         }
 
@@ -181,26 +189,27 @@ class Users extends Database {
 
         $passwordHash = md5($password);
         $createDate = date('Y-m-d H:i:s');
-        $sqlInsertQuery = "INSERT INTO ".$this->userTable."(Email, Password, FirstName, LastName, Role, Status, DepartmentId, CreatedOn) VALUES (
-            '".$email."', '".$passwordHash."', '".$firstName."', '".$lastName."', '".$role."', 1, ".$department.", '".$createDate."')";
+        $sqlInsertQuery = "INSERT INTO " . $this->userTable . "(Email, Password, FirstName, LastName, Role, Status, DepartmentId, CreatedOn) VALUES (
+            '" . $email . "', '" . $passwordHash . "', '" . $firstName . "', '" . $lastName . "', '" . $role . "', 1, " . $department . ", '" . $createDate . "')";
 
         mysqli_query($this->context, $sqlInsertQuery);
-        header("location: ../Users/UsersList.php"); 		
-        
+        header("location: ../Users/UsersList.php");
+
         return $errorMessage;
     }
 
     public function IsActive($userId)
     {
-        $sqlQuery = "SELECT Status FROM ".$this->userTable." WHERE `Id` = ".$userId;
+        $sqlQuery = "SELECT Status FROM " . $this->userTable . " WHERE `Id` = " . $userId;
         $results = mysqli_query($this->context, $sqlQuery);
         $userDetails = mysqli_fetch_assoc($results);
         return $userDetails["Status"];
     }
 
-    public function ChangeActiveStatusForUser($userId) {
+    public function ChangeActiveStatusForUser($userId)
+    {
 
-        $sqlUpdate = "UPDATE `Users` SET `Status`= not `Status` WHERE `Id` = ".$userId;
+        $sqlUpdate = "UPDATE `Users` SET `Status`= not `Status` WHERE `Id` = " . $userId;
         mysqli_query($this->context, $sqlUpdate);
 
         // Get the updated status of the user
@@ -220,17 +229,45 @@ class Users extends Database {
         echo json_encode($response);
     }
 
-    public function EditUser() {
+    public function EditUser()
+    {
         $errorMessage = '';
 
-        if(empty($_POST["EditUser"])) {
+        if (empty($_POST["EditUser"])) {
             return $errorMessage;
         }
-        //TODO: Update user info
+
+        if ($_POST["Email"] == '' || $_POST["FirstName"] == '' || $_POST["LastName"] == '' || $_POST["Role"] == '' || $_POST["Department"] <= 0) {
+            return $errorMessage = 'Please provide valid data!';
+        }
+
+        $email = strip_tags($_POST["Email"]);
+        $firstName = strip_tags($_POST["FirstName"]);
+        $lastName = strip_tags($_POST["LastName"]);
+
+        $role = $_POST["Role"];
+        $department = $_POST["Department"];
+
+        $sqlUpdate = "";
+
+        if ($_POST["Password"] == '') {
+            $sqlUpdate = "UPDATE `Users` SET `Email`='" . $email . "',`FirstName`='" . $firstName . "',`LastName`='" . $lastName . "',`Role`='" . $role . "',`DepartmentId`='" . $department . "' WHERE `Id`='" . $_POST["Id"] . "'";
+        } else {
+            $password = $_POST["Password"];
+            $confirmPassword = $_POST["ConfirmPassword"];
+            if ($password != $confirmPassword) {
+                return $errorMessage = 'Provided passwords is not the same';
+            }
+
+            $passwordHash = md5($password);
+            $sqlUpdate = "UPDATE `Users` SET `Email`='" . $email . "',`Password`='" . $passwordHash . "',`FirstName`='" . $firstName . "',`LastName`='" . $lastName . "',`Role`='" . $role . "',`DepartmentId`='" . $department . "' WHERE `Id`='" . $_POST["Id"] . "'";
+        }
+
+        mysqli_query($this->context, $sqlUpdate);
+
         $_SESSION['SuccessMessage'] = "User updated successfully";
-        header("location: ../Users/UsersList.php"); 
+        header("location: ../Users/UsersList.php");
 
         return $errorMessage;
     }
 }
-?>
