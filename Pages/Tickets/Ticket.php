@@ -5,9 +5,13 @@ if (!$users->isLoggedIn()) {
   header('Location: /Pages/Account/Login.php');
 }
 
-if (!$users->HaveAdminPermissions()) {
-  header('Location: /Pages/Account/Login.php');
+if (!isset($_GET["Id"])) {
+  header('Location: /Pages/Shared/Error.php');
 }
+
+$uid = $_GET["Id"];
+$ticketDetails = $tickets->GetTicketDetailsByUniqueId($uid);
+$ticketResponse = $tickets->GetTicketMessagesByUniqueId($uid);
 
 include($_SERVER['DOCUMENT_ROOT'] . '/Includes/Header.php');
 include($_SERVER['DOCUMENT_ROOT'] . '/Includes/Container.php');
@@ -16,7 +20,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/Pages/Shared/Menu.php');
 <div class="container mt-5">
   <div class="row">
     <div class="col">
-      <h1><strong>Title:</strong> Ticket Title</h1>
+      <h1><strong>Title:</strong> <?php echo $ticketDetails["Title"] ?></h1>
       <hr>
     </div>
   </div>
@@ -28,24 +32,27 @@ include($_SERVER['DOCUMENT_ROOT'] . '/Pages/Shared/Menu.php');
           <h3 class="card-title">Details</h3>
           <div class="row">
             <div class="col-md-6">
-              <p><strong>Department:</strong> IT Department</p>
-              <p><strong>Assigned To:</strong> John Doe</p>
+              <p><strong>Department:</strong> <?php echo $ticketDetails["Department"] ?></p>
+              <p><strong>Assigned To:</strong> <?php echo $ticketDetails["HelpDeskFullName"] ?></p>
 
             </div>
             <div class="col-md-6">
-              <p><strong>Status: </strong><span class="badge bg-secondary">Open</span></p>
-              <p><strong>Created Date:</strong> September 10, 2023</p>
-
+              <p><strong>Status: </strong><span class="badge bg-secondary"><?php echo $ticketDetails["Status"] ?></span></p>
+              <p><strong>Created Date:</strong> <?php echo $ticketDetails["CreatedOn"] ?></p>
             </div>
           </div>
           <div class="row">
             <h3>Additional information</h3>
-            <div class="col-md-6">
-              <p><strong>Technicial helper:</strong> John Somer</p>
-            </div>
-            <div class="col-md-6">
-              <p><strong>Expected finish date:</strong> September 10, 2023</p>
-            </div>
+            <?php if ($ticketDetails["AssignedTechnicalId"] != '') : ?>
+              <div class="col-md-6">
+                <p><strong>Technicial helper:</strong> <?php echo $ticketDetails["AssignedTechnicalId"] ?></p>
+              </div>
+            <?php endif ?>
+            <?php if ($ticketDetails["ExpectedCompletionDate"] != '') : ?>
+              <div class="col-md-6">
+                <p><strong>Expected finish date:</strong> <?php echo $ticketDetails["ExpectedCompletionDate"] ?></p>
+              </div>
+            <?php endif ?>
           </div>
         </div>
       </div>
@@ -64,37 +71,37 @@ include($_SERVER['DOCUMENT_ROOT'] . '/Pages/Shared/Menu.php');
       <h3 class="text-center">Messages</h3>
       <div class="card">
         <div class="card-header">
-          <strong>Starting Message</strong>
-          <span class="float-end">John Doe | September 10, 2023 | 12:30 PM</span>
+          <strong>Initial Message</strong>
+          <span class="float-end"> <?php echo $ticketDetails["UserFullName"] . " | " . date('Y, F j | H:i', strtotime($ticketDetails["CreatedOn"]));   ?></span>
         </div>
         <div class="card-body">
-          <p>This is the starting message of the ticket.</p>
+          <p><?php echo $ticketDetails["InitialMsg"] ?></p>
         </div>
       </div>
 
-      <div class="card mt-3">
-        <div class="card-header">
-          <strong>Reply Message 1</strong>
-          <span class="float-end">Jane Smith | September 11, 2023 | 9:45 AM</span>
+      <?php foreach ($ticketResponse as $value) : ?>
+        <div class="card mt-3">
+          <div class="card-header">
+            <strong>Replay message</strong>
+            <span class="float-end"><?php echo $value["ResponseUser"] . " | " . date('Y, F j | H:i', strtotime($value["CreatedOn"])); ?></span>
+          </div>
+          <div class="card-body">
+            <p><?php echo $value["ResponseMsg"] ?></p>
+          </div>
         </div>
-        <div class="card-body">
-          <p>This is a reply to the ticket.</p>
-        </div>
-      </div>
-
-      <!-- Add more message cards as needed -->
+      <?php endforeach ?>
 
       <div class="card mt-3">
         <div class="card-header">
           <strong>Create New Response</strong>
         </div>
         <div class="card-body">
-          <form>
+          <form id="CreateResponseForTicketForm" class="form-horizontal" role="form" method="POST" action="">
             <div class="mb-3">
               <label for="message">Message</label>
-              <textarea class="form-control" id="message" rows="3" placeholder="Enter your message here"></textarea>
+              <textarea class="form-control" id="Message" rows="3" placeholder="Enter your message here"></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" name="CreateResponseForTicket" class="btn btn-primary">Submit</button>
           </form>
         </div>
       </div>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db:3306
--- Generation Time: Maj 05, 2023 at 11:32 AM
+-- Generation Time: Maj 16, 2023 at 05:19 PM
 -- Wersja serwera: 8.0.33
 -- Wersja PHP: 8.1.17
 
@@ -37,7 +37,9 @@ CREATE TABLE `Departments` (
 --
 
 INSERT INTO `Departments` (`Id`, `Name`) VALUES
-(1, 'IT');
+(1, 'IT'),
+(2, 'HR'),
+(3, 'Finances');
 
 -- --------------------------------------------------------
 
@@ -50,8 +52,16 @@ CREATE TABLE `TicketResponse` (
   `UniqueTicketId` varchar(255) NOT NULL,
   `ResponseMsg` text NOT NULL,
   `ResponseBy` int NOT NULL,
-  `CreatedOn` date NOT NULL
+  `CreatedOn` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `TicketResponse`
+--
+
+INSERT INTO `TicketResponse` (`Id`, `UniqueTicketId`, `ResponseMsg`, `ResponseBy`, `CreatedOn`) VALUES
+(1, '5951317d-ece7-46cc-9aaf-907ecafdac96', 'Lorem Ipsum Test', 2, '2023-05-16 17:00:45'),
+(2, '5951317d-ece7-46cc-9aaf-907ecafdac96', 'Lorem Ipsum da latina Howerowe Sup De Lotius', 1, '2023-05-16 17:01:06');
 
 -- --------------------------------------------------------
 
@@ -66,7 +76,7 @@ CREATE TABLE `Tickets` (
   `Title` varchar(255) NOT NULL,
   `DepartmentId` int NOT NULL,
   `InitialMsg` text NOT NULL,
-  `CreatedOn` date NOT NULL,
+  `CreatedOn` datetime NOT NULL,
   `AssignetToUserId` int DEFAULT NULL,
   `IsReadByUser` tinyint(1) NOT NULL,
   `IsReadByHelpDesk` tinyint(1) NOT NULL,
@@ -74,6 +84,15 @@ CREATE TABLE `Tickets` (
   `ExpectedCompletionDate` date DEFAULT NULL,
   `AssignedTechnicalId` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `Tickets`
+--
+
+INSERT INTO `Tickets` (`Id`, `UniqueId`, `UserId`, `Title`, `DepartmentId`, `InitialMsg`, `CreatedOn`, `AssignetToUserId`, `IsReadByUser`, `IsReadByHelpDesk`, `Status`, `ExpectedCompletionDate`, `AssignedTechnicalId`) VALUES
+(1, '5951317d-ece7-46cc-9aaf-907ecafdac96', 1, 'Test', 1, 'Test', '2023-05-16 00:00:00', 1, 0, 0, 'Created', NULL, NULL),
+(2, '646381a282bc5', 1, 'CreateTest', 1, 'Testing message for ticket creation', '2023-05-16 00:00:00', NULL, 0, 0, 'Resolved', NULL, NULL),
+(3, '64638293ec409', 1, 'CreateTest', 1, 'Testing message for ticket creation', '2023-05-16 00:00:00', NULL, 0, 0, 'Created', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -99,8 +118,13 @@ CREATE TABLE `Users` (
 
 INSERT INTO `Users` (`Id`, `Email`, `Password`, `FirstName`, `LastName`, `Role`, `Status`, `DepartmentId`, `CreatedOn`) VALUES
 (1, 'admin@helpdesk.com', '9e38e8d688743e0d07d669a1fcbcd35b', 'Adam', 'Mickiewicz', 'Admin', 1, 1, '2023-05-01'),
-(2, 'test@test.com', '9e38e8d688743e0d07d669a1fcbcd35b', 'Janusz', 'Kowalski', 'HelpDesk', 1, 1, '2023-05-05'),
-(3, 'marian.kowalski@helpdesk.com', '9e38e8d688743e0d07d669a1fcbcd35b', 'Marian', 'Kowalski', 'User', 1, 1, '2023-05-05');
+(2, 'test@test.com', '9e38e8d688743e0d07d669a1fcbcd35b', 'Janusz', 'Kowalski', 'HelpDesk', 0, 2, '2023-05-05'),
+(3, 'marian.Janigloda@helpdesk.com', '0cbc6611f5540bd0809a388dc95a615b', 'Marian', 'Janigloda', 'Admin', 1, 1, '2023-05-05'),
+(4, 'test@helpdesk.com', '9e38e8d688743e0d07d669a1fcbcd35b', 'Testoron', 'Tost', 'User', 1, 3, '2023-05-05'),
+(5, 'Helosor.Koric@helpdesk.com', '9e38e8d688743e0d07d669a1fcbcd35b', 'Helosor', 'Koric', 'Admin', 1, 3, '2023-05-05'),
+(6, 'matxx29@gmail.com', '9e38e8d688743e0d07d669a1fcbcd35b', 'Mateusz', 'Jaruga', 'HelpDesk', 1, 1, '2023-05-05'),
+(7, 'dasd@asd.vom', '7815696ecbf1c96e6894b779456d330e', 'asd', 'asd', 'HelpDesk', 1, 1, '2023-05-05'),
+(8, 'Joanna.Mariki@company.com', '9e38e8d688743e0d07d669a1fcbcd35b', 'Joanna', 'Mariki', 'User', 1, 3, '2023-05-07');
 
 --
 -- Indeksy dla zrzutów tabel
@@ -139,25 +163,25 @@ ALTER TABLE `Users`
 -- AUTO_INCREMENT for table `Departments`
 --
 ALTER TABLE `Departments`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `TicketResponse`
 --
 ALTER TABLE `TicketResponse`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `Tickets`
 --
 ALTER TABLE `Tickets`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `Users`
 --
 ALTER TABLE `Users`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

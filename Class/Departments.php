@@ -2,7 +2,6 @@
 
 class Departments extends Database
 {
-    public $departmentTable = "Departments";
     private $context = false;
 
     public function __construct()
