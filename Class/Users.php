@@ -30,7 +30,7 @@ class Users extends Database
     public function HaveHelpDeskPermissions()
     {
         if (isset($_SESSION["Role"])) {
-            if ($_SESSION["Role"] == "HelpDesk") {
+            if ($_SESSION["Role"] == "HelpDesk" || $_SESSION["Role"] == "Admin") {
                 return true;
             }
         }

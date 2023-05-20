@@ -35,7 +35,7 @@ class Tickets extends Database
         $sqlInsert = "INSERT INTO " . $this->ticketsTable . " (`UniqueId`, `UserId`, `Title`, `DepartmentId`, `InitialMsg`, `CreatedOn`, `IsReadByUser`, `IsReadByHelpDesk`, `Status`) VALUES ('" . $uniqueId . "', '" . $userId . "', '" . $title . "', '" . $department . "', '" . $message . "', '" . $createDate . "', '0', '0', '" . $status . "')";
 
         mysqli_query($this->context, $sqlInsert);
-        header("location: ../Tickets/Ticket.php?TicketId=" . $uniqueId);
+        header("location: ../Tickets/Ticket.php?Id=" . $uniqueId);
 
         return $errorMessage;
     }
@@ -106,7 +106,6 @@ class Tickets extends Database
 
     public function GetTicketDetailsByUniqueId($uid)
     {
-        echo $uid;
         $sqlQuery = "SELECT
                         Tick.Id,
                         Tick.UniqueId,
@@ -184,6 +183,30 @@ class Tickets extends Database
 
     public function CreateResponseForTicket()
     {
-        $sqlInsert = "";
+        $errorMessage = '';
+
+        if (empty($_POST["CreateResponseForTicket"])) {
+            return $errorMessage;
+        }
+
+        if ($_POST["Message"] == '') {
+            $errorMessage = "Message wasn't sent";
+            return $errorMessage;
+        }
+
+        $uid = $_POST["UId"];
+        $message = $_POST["Message"];
+        $createdBy = $_SESSION["UserId"];
+        $createDate = date('Y-m-d H:i:s');
+
+        $sqlInsert = "INSERT INTO `TicketResponse`(`UniqueTicketId`, `ResponseMsg`, `ResponseBy`, `CreatedOn`) VALUES (?, ?, ?, ?)";
+
+        $stmt = mysqli_prepare($this->context, $sqlInsert);
+        mysqli_stmt_bind_param($stmt, "ssss", $uid, $message, $createdBy, $createDate);
+        mysqli_stmt_execute($stmt);
+
+        $_SESSION['SuccessMessage'] = "Response created successfully";
+        header("location: ../Tickets/Ticket.php?Id=" . $uid);
+        return $errorMessage;
     }
 }
