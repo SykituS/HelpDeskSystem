@@ -131,7 +131,12 @@ if (isset($_SESSION["SuccessMessage"])) {
           <strong>Create New Response</strong>
         </div>
         <div class="card-body">
-          <?php if ($ticketDetails["HelpDeskFullName"] != '') : ?>
+          <?php if (($ticketDetails["HelpDeskFullName"] != '' &&
+              ($ticketDetails["AssignetToUserId"] == $_SESSION["UserId"] ||
+                $ticketDetails["AssignedTechnicalId"] == $_SESSION["UserId"])) ||
+            $ticketDetails["UserId"] == $_SESSION["UserId"] ||
+            $users->HaveAdminPermissions()
+          ) : ?>
             <form id="CreateResponseForTicketForm" class="form-horizontal" role="form" method="POST" action="">
               <input type="hidden" name="UId" value="<?php echo $uid ?>" />
               <div class="mb-3">

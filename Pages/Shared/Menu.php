@@ -18,7 +18,7 @@
 							</div>
 						</a>
 					</li>
-					<?php if ($users->HaveAdminPermissions()) { ?>
+					<?php if ($users->HaveAdminPermissions()) : ?>
 						<li class="nav-item">
 							<a class="nav-link" href="/Pages/Departments/DepartmentsList.php">
 								<div class="icon-container">
@@ -35,6 +35,8 @@
 								</div>
 							</a>
 						</li>
+					<?php endif ?>
+					<?php if ($users->HaveHelpDeskPermissions()) : ?>
 						<li class="nav-item">
 							<a class="nav-link" href="/Pages/Tickets/TicketsList.php">
 								<div class="icon-container">
@@ -43,7 +45,7 @@
 								</div>
 							</a>
 						</li>
-					<?php } ?>
+					<?php endif ?>
 					<li class="nav-item">
 						<a class="nav-link" href="/Pages/Tickets/TicketsList.php">
 							<div class="icon-container">

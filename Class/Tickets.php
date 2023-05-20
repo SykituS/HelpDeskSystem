@@ -32,9 +32,11 @@ class Tickets extends Database
         //$timestamp = strtotime('+1 weeks');
         //$expectedCompletionDate = date('Y-m-d', $timestamp);
 
-        $sqlInsert = "INSERT INTO " . $this->ticketsTable . " (`UniqueId`, `UserId`, `Title`, `DepartmentId`, `InitialMsg`, `CreatedOn`, `IsReadByUser`, `IsReadByHelpDesk`, `Status`) VALUES ('" . $uniqueId . "', '" . $userId . "', '" . $title . "', '" . $department . "', '" . $message . "', '" . $createDate . "', '0', '0', '" . $status . "')";
+        $sqlInsert = "INSERT INTO " . $this->ticketsTable . " (`UniqueId`, `UserId`, `Title`, `DepartmentId`, `InitialMsg`, `CreatedOn`, `IsReadByUser`, `IsReadByHelpDesk`, `Status`) VALUES (?, ?, ?, ?, ?, ?, '0', '0', ?)";
 
-        mysqli_query($this->context, $sqlInsert);
+        $stmt = mysqli_prepare($this->context, $sqlInsert);
+        mysqli_stmt_bind_param($stmt, "sssssss", $uniqueId, $userId, $title, $department, $message, $createDate, $status);
+        mysqli_stmt_execute($stmt);
         header("location: ../Tickets/Ticket.php?Id=" . $uniqueId);
 
         return $errorMessage;
@@ -102,6 +104,14 @@ class Tickets extends Database
         }
 
         return $ticketsData;
+    }
+
+    public function GetOnlyUnassignedTickets()
+    {
+    }
+
+    public function GetOnlyTicketsAssignedToUserId()
+    {
     }
 
     public function GetTicketDetailsByUniqueId($uid)
