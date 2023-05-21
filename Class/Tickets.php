@@ -82,9 +82,15 @@ class Tickets extends Database
                     ON
                         (Tick.AssignetToUserId = helpdesk.Id)
                     WHERE
-                    Tick.UserId = " . $userId . " AND " . $selectWithStatus;
+                    Tick.UserId = ? AND " . $selectWithStatus;
 
-        $result = mysqli_query($this->context, $sqlQuery);
+
+        // Prevent SqlInjection using params
+        $stmt = mysqli_prepare($this->context, $sqlQuery);
+        mysqli_stmt_bind_param($stmt, "s", $userId);
+        mysqli_stmt_execute($stmt);
+
+        $result = mysqli_stmt_get_result($stmt);
         $ticketsData = array();
 
         while ($ticket = mysqli_fetch_assoc($result)) {
@@ -146,6 +152,7 @@ class Tickets extends Database
                     WHERE
                         Tick.UniqueId = ?";
 
+        // Prevent SqlInjection using params
         $stmt = mysqli_prepare($this->context, $sqlQuery);
         mysqli_stmt_bind_param($stmt, "s", $uid);
         mysqli_stmt_execute($stmt);
@@ -172,6 +179,7 @@ class Tickets extends Database
                     WHERE
                         resp.UniqueTicketId = ?";
 
+        // Prevent SqlInjection using params
         $stmt = mysqli_prepare($this->context, $sqlQuery);
         mysqli_stmt_bind_param($stmt, "s", $uid);
         mysqli_stmt_execute($stmt);
@@ -211,12 +219,15 @@ class Tickets extends Database
 
         $sqlInsert = "INSERT INTO `TicketResponse`(`UniqueTicketId`, `ResponseMsg`, `ResponseBy`, `CreatedOn`) VALUES (?, ?, ?, ?)";
 
+        // Prevent SqlInjection using params
         $stmt = mysqli_prepare($this->context, $sqlInsert);
         mysqli_stmt_bind_param($stmt, "ssss", $uid, $message, $createdBy, $createDate);
         mysqli_stmt_execute($stmt);
 
         $_SESSION['SuccessMessage'] = "Response created successfully";
         header("location: ../Tickets/Ticket.php?Id=" . $uid);
+        // move user to bottom of the page
+        echo '<script>window.location.hash = "#bottom";</script>';
         return $errorMessage;
     }
 }

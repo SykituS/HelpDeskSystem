@@ -57,12 +57,17 @@ class Users extends Database
             $email = strip_tags($_POST["Email"]);
             $password = $_POST["Password"];
             $sqlQuery = "SELECT * FROM " . $this->userTable . "
-                            WHERE email='" . $email . "' AND password='" . md5($password) . "' AND status = 1";
+                            WHERE email=? AND password=? AND status = 1";
 
-            $results = mysqli_query($this->context, $sqlQuery);
-            $isLoginValid = mysqli_num_rows($results);
+            // Prevent SqlInjection using params
+            $stmt = mysqli_prepare($this->context, $sqlQuery);
+            mysqli_stmt_bind_param($stmt, "ss", $email, md5($password));
+            mysqli_stmt_execute($stmt);
+
+            $isLoginValid = mysqli_stmt_num_rows($stmt);
+
             if ($isLoginValid) {
-                $userDetails = mysqli_fetch_assoc($results);
+                $userDetails =  mysqli_stmt_get_result($stmt);
 
                 if ($userDetails["Status"] != 1) {
                     $errorMessage = "You account is disabled!";
@@ -115,9 +120,14 @@ class Users extends Database
 
     public function GetUserInfoById($Id)
     {
-        $sqlQuery = "SELECT u.*, dep.Name as DepartmentName FROM " . $this->userTable . " as u INNER JOIN " . $this->departmentTable . " as dep ON DepartmentId = dep.Id WHERE u.Id = " . $Id;
+        $sqlQuery = "SELECT u.*, dep.Name as DepartmentName FROM " . $this->userTable . " as u INNER JOIN " . $this->departmentTable . " as dep ON DepartmentId = dep.Id WHERE u.Id = ?";
 
-        $result = mysqli_query($this->context, $sqlQuery);
+        // Prevent SqlInjection using params
+        $stmt = mysqli_prepare($this->context, $sqlQuery);
+        mysqli_stmt_bind_param($stmt, "s", $Id);
+        mysqli_stmt_execute($stmt);
+
+        $result = mysqli_stmt_get_result($stmt);
 
         $data = mysqli_fetch_assoc($result);
         return $data;
@@ -190,9 +200,13 @@ class Users extends Database
         $passwordHash = md5($password);
         $createDate = date('Y-m-d H:i:s');
         $sqlInsertQuery = "INSERT INTO " . $this->userTable . "(Email, Password, FirstName, LastName, Role, Status, DepartmentId, CreatedOn) VALUES (
-            '" . $email . "', '" . $passwordHash . "', '" . $firstName . "', '" . $lastName . "', '" . $role . "', 1, " . $department . ", '" . $createDate . "')";
+            ?, ?, ?, ?, ?, 1, ?, ?)";
 
-        mysqli_query($this->context, $sqlInsertQuery);
+        // Prevent SqlInjection using params
+        $stmt = mysqli_prepare($this->context, $sqlInsertQuery);
+        mysqli_stmt_bind_param($stmt, "sssssss", $email, $passwordHash, $firstName, $lastName, $role, $department, $createDate);
+        mysqli_stmt_execute($stmt);
+
         header("location: ../Users/UsersList.php");
 
         return $errorMessage;
@@ -200,17 +214,26 @@ class Users extends Database
 
     public function IsActive($userId)
     {
-        $sqlQuery = "SELECT Status FROM " . $this->userTable . " WHERE `Id` = " . $userId;
-        $results = mysqli_query($this->context, $sqlQuery);
+        $sqlQuery = "SELECT Status FROM " . $this->userTable . " WHERE `Id` = ?";
+
+        // Prevent SqlInjection using params
+        $stmt = mysqli_prepare($this->context, $sqlQuery);
+        mysqli_stmt_bind_param($stmt, "s", $userId);
+        mysqli_stmt_execute($stmt);
+
+        $results = mysqli_stmt_get_result($stmt);
         $userDetails = mysqli_fetch_assoc($results);
         return $userDetails["Status"];
     }
 
     public function ChangeActiveStatusForUser($userId)
     {
+        $sqlUpdate = "UPDATE `Users` SET `Status`= not `Status` WHERE `Id` = ?";
 
-        $sqlUpdate = "UPDATE `Users` SET `Status`= not `Status` WHERE `Id` = " . $userId;
-        mysqli_query($this->context, $sqlUpdate);
+        // Prevent SqlInjection using params
+        $stmt = mysqli_prepare($this->context, $sqlUpdate);
+        mysqli_stmt_bind_param($stmt, "s", $userId);
+        mysqli_stmt_execute($stmt);
 
         // Get the updated status of the user
         if ($this->IsActive($userId) == 0) {
@@ -249,9 +272,10 @@ class Users extends Database
         $department = $_POST["Department"];
 
         $sqlUpdate = "";
-
         if ($_POST["Password"] == '') {
-            $sqlUpdate = "UPDATE `Users` SET `Email`='" . $email . "',`FirstName`='" . $firstName . "',`LastName`='" . $lastName . "',`Role`='" . $role . "',`DepartmentId`='" . $department . "' WHERE `Id`='" . $_POST["Id"] . "'";
+            $sqlUpdate = "UPDATE `Users` SET `Email`=?, `FirstName`=?, `LastName`=?, `Role`=?, `DepartmentId`=? WHERE `Id`=?";
+            $stmt = mysqli_prepare($this->context, $sqlUpdate);
+            mysqli_stmt_bind_param($stmt, "ssssss", $email, $firstName, $lastName, $role, $department, $_POST["Id"]);
         } else {
             $password = $_POST["Password"];
             $confirmPassword = $_POST["ConfirmPassword"];
@@ -260,10 +284,11 @@ class Users extends Database
             }
 
             $passwordHash = md5($password);
-            $sqlUpdate = "UPDATE `Users` SET `Email`='" . $email . "',`Password`='" . $passwordHash . "',`FirstName`='" . $firstName . "',`LastName`='" . $lastName . "',`Role`='" . $role . "',`DepartmentId`='" . $department . "' WHERE `Id`='" . $_POST["Id"] . "'";
+            $sqlUpdate = "UPDATE `Users` SET `Email`=?, `Password`=?, `FirstName`=?, `LastName`=?, `Role`=?, `DepartmentId`=? WHERE `Id`=?";
+            $stmt = mysqli_prepare($this->context, $sqlUpdate);
+            mysqli_stmt_bind_param($stmt, "ssssss", $email, $passwordHash, $firstName, $lastName, $role, $department, $_POST["Id"]);
         }
-
-        mysqli_query($this->context, $sqlUpdate);
+        mysqli_stmt_execute($stmt);
 
         $_SESSION['SuccessMessage'] = "User updated successfully";
         header("location: ../Users/UsersList.php");

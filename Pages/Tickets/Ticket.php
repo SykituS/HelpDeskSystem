@@ -149,6 +149,7 @@ if (isset($_SESSION["SuccessMessage"])) {
                 </div>
               <?php } ?>
               <input type="submit" name="CreateResponseForTicket" class="btn btn-primary" value="Submit" />
+              <div id="bottom"></div>
             </form>
           <?php else : ?>
             <h5 class="text-center">You can only responde to this ticket if: </h5>

@@ -1,23 +1,24 @@
-<?php 
+<?php
 
-class Database {
-    
+class Database
+{
+
     //Tables name
     public $userTable = "Users";
     public $departmentTable = "Departments";
     public $ticketsTable = "Tickets";
-    
+
     //Pagination settings
     public $recordsPerPage = 15;
 
-    public function dbConnect() {
+    public function dbConnect()
+    {
         static $context = null;
-        if (is_null($context))
-        {
+        if (is_null($context)) {
             $connection = new mysqli(Host, User, Password, Database);
 
-            if ($connection -> connect_error) {
-                die("Connection to MySql failed: ".$connection->connect_error);
+            if ($connection->connect_error) {
+                die("Connection to MySql failed: " . $connection->connect_error);
             } else {
                 $context = $connection;
             }
@@ -25,15 +26,16 @@ class Database {
         return $context;
     }
 
-    public function retrivePageInformations($tableName) {
+    public function retrivePageInformations($tableName)
+    {
 
-        $sqlQuery = "SELECT * FROM ".$tableName;
+        $sqlQuery = "SELECT * FROM " . $tableName;
 
         $result = mysqli_query($this->dbConnect(), $sqlQuery);
 
         $totalRecords = mysqli_num_rows($result);
-        $totalPage = ceil($totalRecords/$this->recordsPerPage);
-        
+        $totalPage = ceil($totalRecords / $this->recordsPerPage);
+
         $currentPage = isset($_GET["Page"]) ? $_GET["Page"] : 1;
         $offset = ($currentPage - 1) * $this->recordsPerPage;
 
@@ -47,13 +49,12 @@ class Database {
         return $pageInformation;
     }
 
-    function console_log($output, $with_script_tags = true) {
-        $js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) . 
-    ');';
+    function console_log($output, $with_script_tags = true)
+    {
+        $js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) . ');';
         if ($with_script_tags) {
             $js_code = '<script>' . $js_code . '</script>';
         }
         echo $js_code;
     }
 }
-?>
