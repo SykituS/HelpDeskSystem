@@ -73,12 +73,12 @@
     imageToBeShown.style.backgroundImage = 'url(' + selectedImage + ')';
 
     // Calculate random delay values for image and text
-    var minImageDelay = 60000; // Minimum delay in milliseconds for image 
-    var maxImageDelay = 180000; // Maximum delay in milliseconds for image 
+    var minImageDelay = 300000; // Minimum delay in milliseconds for image 
+    var maxImageDelay = 600000; // Maximum delay in milliseconds for image 
     var randomImageDelay = getRandomInterval(minImageDelay, maxImageDelay);
 
-    var minTextDelay = 60000; // Minimum delay in milliseconds for text 
-    var maxTextDelay = 180000; // Maximum delay in milliseconds for text 
+    var minTextDelay = 300000; // Minimum delay in milliseconds for text 
+    var maxTextDelay = 600000; // Maximum delay in milliseconds for text 
     var randomTextDelay = getRandomInterval(minTextDelay, maxTextDelay);
 
     // Show the Death Star image and random text after the random delays
