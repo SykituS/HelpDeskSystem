@@ -26,9 +26,9 @@ Instrukcja instalacji projektu, w tym do jakich plików i do jakich katalogów n
 
 ## Wykorzystane zewnętrzne biblioteki
 
-- bootstrap 5.2.3 -> css, bundle with popper
-- jquery 3.6.0 -> ajax calls
-- feather icons -> icons
+- bootstrap 5.2.3
+- jquery 3.6.0
+- feather icons
 
 ## Development
 
