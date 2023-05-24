@@ -17,5 +17,8 @@
     <!-- feather icons -->
     <script src="https://unpkg.com/feather-icons"></script>
 
+    <!-- JQuery 3.6.0 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <title>Helpdesk System</title>
 </head>

@@ -91,14 +91,14 @@ if (isset($_SESSION["SuccessMessage"])) {
   <div class="row mt-4">
     <div class="col">
       <hr>
-      <div class="text-center">
+      <div id="ticket-menu-section" class="text-center">
         <a onclick="goBack()" class="btn btn-outline-secondary fw-bold">Go back</a>
         <?php if ($users->HaveHelpDeskPermissions()) : ?>
-          <?php if ($ticketDetails["HelpDeskFullName"] != '') : ?>
+          <?php if ($ticketDetails["AssignetToUserId"] != '') : ?>
             <a href="#ChangeStatus" class="btn btn-outline-primary fw-bold">Change ticket status</a>
             <a href="#UpdateTicket" class="btn btn-outline-primary fw-bold">Update ticket data</a>
           <?php else : ?>
-            <a href="#UpdateTicket" class="btn btn-outline-warning fw-bold">Assign Ticket</a>
+            <button class="btn btn-outline-warning fw-bold" onclick="assignTicket('<?php echo $ticketDetails['UniqueId']; ?>')"><span>Assign Ticket</span></button>
           <?php endif ?>
         <?php endif ?>
       </div>
@@ -149,7 +149,6 @@ if (isset($_SESSION["SuccessMessage"])) {
                 </div>
               <?php } ?>
               <input type="submit" name="CreateResponseForTicket" class="btn btn-primary" value="Submit" />
-              <div id="bottom"></div>
             </form>
           <?php else : ?>
             <h5 class="text-center">You can only responde to this ticket if: </h5>
@@ -160,10 +159,39 @@ if (isset($_SESSION["SuccessMessage"])) {
               <li class="list-group-item">- You are admin</li>
             </ul>
           <?php endif ?>
+          <div id="bottom"></div>
 
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+  function assignTicket(ticketId) {
+    console.log("Function start");
+    $.ajax({
+      url: 'TicketAction.php',
+      type: 'GET',
+      data: {
+        TicketId: ticketId
+      },
+      dataType: 'json',
+      cache: false,
+      success: function(response) {
+        if (response.success) {
+          location.reload();
+        } else {
+          console.log(response.message);
+        }
+      },
+      error: function() {
+        console.log('AJAX request failed');
+      }
+    });
+
+    return false; // Prevent default form submission behavior
+  }
+</script>
+
 <?php include($_SERVER['DOCUMENT_ROOT'] . '/Includes/Footer.php'); ?>

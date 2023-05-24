@@ -38,9 +38,9 @@
 					<?php endif ?>
 					<?php if ($users->HaveHelpDeskPermissions()) : ?>
 						<li class="nav-item">
-							<a class="nav-link" href="/Pages/Tickets/TicketsList.php">
+							<a class="nav-link" href="/Pages/Tickets/TicketsListHelpDesk.php">
 								<div class="icon-container">
-									<span title="Tickets"><i data-feather="list"></i></span>
+									<span title="Helpdesk"><i data-feather="globe"></i></span>
 									<span class="icon-text">Helpdesk</span>
 								</div>
 							</a>

@@ -1,10 +1,17 @@
-<?php 
-include 'Configuration/init.php';
+<?php
 
-if(!$users->IsLoggedIn()) {
-    header("Location: Pages/Account/Login.php");
+if (!file_exists("Configuration/Config.php")) {
+    header("Location: Install.php");
 } else {
-    header("Location: Pages/MainPage/Main.php");
-}
-?>
+    include 'Configuration/init.php';
 
+    if (!$database->checkDbConnection()) {
+        header("Location: Install.php");
+    }
+
+    if (!$users->IsLoggedIn()) {
+        header("Location: Pages/Account/Login.php");
+    } else {
+        header("Location: Pages/MainPage/Main.php");
+    }
+}

@@ -26,6 +26,16 @@ class Database
         return $context;
     }
 
+    public function checkDbConnection()
+    {
+        $connection = new mysqli(Host, User, Password, Database);
+
+        if ($connection->connect_error) {
+            return false;
+        }
+        return true;
+    }
+
     public function retrivePageInformations($tableName)
     {
 

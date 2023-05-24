@@ -55,29 +55,30 @@ class Users extends Database
 
         if (!empty($_POST["Login"]) && $_POST["Email"] != '' && $_POST["Password"] != '') {
             $email = strip_tags($_POST["Email"]);
-            $password = $_POST["Password"];
+            $password = md5($_POST["Password"]);
             $sqlQuery = "SELECT * FROM " . $this->userTable . "
                             WHERE email=? AND password=? AND status = 1";
 
             // Prevent SqlInjection using params
             $stmt = mysqli_prepare($this->context, $sqlQuery);
-            mysqli_stmt_bind_param($stmt, "ss", $email, md5($password));
+            mysqli_stmt_bind_param($stmt, "ss", $email, $password);
             mysqli_stmt_execute($stmt);
 
-            $isLoginValid = mysqli_stmt_num_rows($stmt);
+            mysqli_stmt_store_result($stmt);
+            $rowCount = mysqli_stmt_num_rows($stmt);
 
-            if ($isLoginValid) {
-                $userDetails =  mysqli_stmt_get_result($stmt);
-
-                if ($userDetails["Status"] != 1) {
-                    $errorMessage = "You account is disabled!";
+            if ($rowCount == 1) {
+                mysqli_stmt_bind_result($stmt, $id, $email, $password, $firstName, $lastName, $role, $status, $department, $created);
+                mysqli_stmt_fetch($stmt);
+                if ($status != 1) {
+                    $errorMessage = "Your account is disabled!";
                     return $errorMessage;
                 }
 
-                $_SESSION["UserId"] = $userDetails["Id"];
-                $_SESSION["UserFirstName"] = $userDetails["FirstName"];
-                $_SESSION["UserLastName"] = $userDetails["LastName"];
-                $_SESSION["Role"] = $userDetails["Role"];
+                $_SESSION["UserId"] = $id;
+                $_SESSION["UserFirstName"] = $firstName;
+                $_SESSION["UserLastName"] = $lastName;
+                $_SESSION["Role"] = $role;
                 header("location: ../MainPage/Main.php");
             } else {
                 $number = rand(0, 999);
