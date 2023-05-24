@@ -5,6 +5,13 @@ if (!$users->isLoggedIn()) {
     header('Location: /Pages/Account/Login.php');
 }
 
+if (!isset($_GET["Id"])) {
+    header('Location: /Pages/Shared/Error.php');
+}
+
+$ticketId = $_GET["Id"];
+//$ticketDetails = $users->GetUserInfoById($userId);
+
 $errorMessage = $tickets->CreateNewTicket();
 
 include($_SERVER['DOCUMENT_ROOT'] . '/Includes/Header.php');
@@ -22,14 +29,14 @@ include($_SERVER['DOCUMENT_ROOT'] . '/Pages/Shared/Menu.php');
             <div class="text-center">
                 <div class="">
                     <div class="form-floating">
-                        <input type="Text" class="form-control" id="Title" name="Title" placeholder="Title" required>
+                        <input type="Text" class="form-control" id="Title" name="Title" placeholder="Title" disabled>
                         <label for="Title">Title</label>
                     </div>
                 </div>
                 <div class="mt-3">
                     <div class="form-floating">
-                        <textarea class="form-control" id="Message" name="Message" rows="3" placeholder="Message" required></textarea>
-                        <label for="Message">Message</label>
+                        <input type="Text" class="form-control" id="Title" name="Title" placeholder="Title" value="placeholder" disabled>
+                        <label for="Title">Assigned user</label>
                     </div>
                 </div>
                 <div class="mt-3">
@@ -44,6 +51,18 @@ include($_SERVER['DOCUMENT_ROOT'] . '/Pages/Shared/Menu.php');
 
                         ?>
                     </select>
+                </div>
+
+                <div class="mt-3">
+                    <label for="Department">Technicial</label>
+                    <select class="form-select" id="Department" name="Department" required>
+                    </select>
+                </div>
+                <div class="mt-3">
+                    <div class="form-floating">
+                        <input type="Text" class="form-control" id="Title" name="Title" placeholder="Title" required>
+                        <label for="Title">Expected finish date</label>
+                    </div>
                 </div>
             </div>
 

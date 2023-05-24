@@ -15,34 +15,17 @@ include($_SERVER['DOCUMENT_ROOT'] . '/Pages/Shared/Menu.php');
 
 <div class="card mt-5">
     <div class="card-header text-center pt-3">
-        <h1 class="h3 mb-3 fw-normal">Create new ticket: </h1>
+        <h1 class="h3 mb-3 fw-normal">Change status: </h1>
     </div>
     <div class="card-body">
         <form id="createNewTicketForm" class="form-horizontal" role="form" method="POST" action="">
             <div class="text-center">
                 <div class="">
-                    <div class="form-floating">
-                        <input type="Text" class="form-control" id="Title" name="Title" placeholder="Title" required>
-                        <label for="Title">Title</label>
-                    </div>
-                </div>
-                <div class="mt-3">
-                    <div class="form-floating">
-                        <textarea class="form-control" id="Message" name="Message" rows="3" placeholder="Message" required></textarea>
-                        <label for="Message">Message</label>
-                    </div>
-                </div>
-                <div class="mt-3">
-                    <label for="Department">Department</label>
-                    <select class="form-select" id="Department" name="Department" required>
-                        <?php
-                        $departmentList = $depatments->getAllDepartments();
-                        foreach ($departmentList as $value) {
-                            $isInRole = $value[0] == $userDetails["Role"] ? "Selected" : "";
-                            echo '<option value="' . $value[0] . '" ' . $isInRole . '>' . $value[1] . '</option>';
-                        }
-
-                        ?>
+                    <select class="form-select" id="Status" name="Status" required>
+                        <option value="Created">Created</option>
+                        <option value="InProgress">In Progress</option>
+                        <option value="Resolved">Resolved</option>
+                        <option value="Cancelled">Cancelled</option>
                     </select>
                 </div>
             </div>

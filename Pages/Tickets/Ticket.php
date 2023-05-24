@@ -90,19 +90,7 @@ if (isset($_SESSION["SuccessMessage"])) {
 
   <div class="row mt-4">
     <div class="col">
-      <hr>
-      <div id="ticket-menu-section" class="text-center">
-        <a onclick="goBack()" class="btn btn-outline-secondary fw-bold">Go back</a>
-        <?php if ($users->HaveHelpDeskPermissions()) : ?>
-          <?php if ($ticketDetails["AssignetToUserId"] != '') : ?>
-            <a href="#ChangeStatus" class="btn btn-outline-primary fw-bold">Change ticket status</a>
-            <a href="#UpdateTicket" class="btn btn-outline-primary fw-bold">Update ticket data</a>
-          <?php else : ?>
-            <button class="btn btn-outline-warning fw-bold" onclick="assignTicket('<?php echo $ticketDetails['UniqueId']; ?>')"><span>Assign Ticket</span></button>
-          <?php endif ?>
-        <?php endif ?>
-      </div>
-      <hr>
+      <?php include("TicketMenuSection.php"); ?>
       <h3 class="text-center">Messages</h3>
       <div class="card">
         <div class="card-header">
@@ -131,38 +119,42 @@ if (isset($_SESSION["SuccessMessage"])) {
           <strong>Create New Response</strong>
         </div>
         <div class="card-body">
-          <?php if (($ticketDetails["HelpDeskFullName"] != '' &&
-              ($ticketDetails["AssignetToUserId"] == $_SESSION["UserId"] ||
-                $ticketDetails["AssignedTechnicalId"] == $_SESSION["UserId"])) ||
-            $ticketDetails["UserId"] == $_SESSION["UserId"] ||
-            $users->HaveAdminPermissions()
-          ) : ?>
-            <form id="CreateResponseForTicketForm" class="form-horizontal" role="form" method="POST" action="">
-              <input type="hidden" name="UId" value="<?php echo $uid ?>" />
-              <div class="mb-3">
-                <label for="Message">Message</label>
-                <textarea class="form-control" id="Message" name="Message" rows="3" placeholder="Enter your message here" required></textarea>
-              </div>
-              <?php if ($errorMessage != '') { ?>
-                <div class="mt-2">
-                  <div class="alert alert-danger col-sm-12"><?php echo $errorMessage; ?></div>
-                </div>
-              <?php } ?>
-              <input type="submit" name="CreateResponseForTicket" class="btn btn-primary" value="Submit" />
-            </form>
+          <?php if ($ticketDetails["Status"] == "Canceled" || $ticketDetails["Status"] == "Resolved") : ?>
+            <h5 class="text-center">You can't response to this ticket because it is closed!</h5>
           <?php else : ?>
-            <h5 class="text-center">You can only responde to this ticket if: </h5>
-            <ul class="list-group">
-              <li class="list-group-item">- You have created this ticket</li>
-              <li class="list-group-item">- You are assigned to this ticket</li>
-              <li class="list-group-item">- You are technicial</li>
-              <li class="list-group-item">- You are admin</li>
-            </ul>
+            <?php if (($ticketDetails["HelpDeskFullName"] != '' &&
+                ($ticketDetails["AssignetToUserId"] == $_SESSION["UserId"] ||
+                  $ticketDetails["AssignedTechnicalId"] == $_SESSION["UserId"])) ||
+              $ticketDetails["UserId"] == $_SESSION["UserId"] ||
+              $users->HaveAdminPermissions()
+            ) : ?>
+              <form id="CreateResponseForTicketForm" class="form-horizontal" role="form" method="POST" action="">
+                <input type="hidden" name="UId" value="<?php echo $uid ?>" />
+                <div class="mb-3">
+                  <label for="Message">Message</label>
+                  <textarea class="form-control" id="Message" name="Message" rows="3" placeholder="Enter your message here" required></textarea>
+                </div>
+                <?php if ($errorMessage != '') { ?>
+                  <div class="mt-2">
+                    <div class="alert alert-danger col-sm-12"><?php echo $errorMessage; ?></div>
+                  </div>
+                <?php } ?>
+                <input type="submit" name="CreateResponseForTicket" class="btn btn-primary" value="Submit" />
+              </form>
+            <?php else : ?>
+              <h5 class="text-center">You can only responde to this ticket if: </h5>
+              <ul class="list-group">
+                <li class="list-group-item">- You have created this ticket</li>
+                <li class="list-group-item">- You are assigned to this ticket</li>
+                <li class="list-group-item">- You are technicial</li>
+                <li class="list-group-item">- You are admin</li>
+              </ul>
+            <?php endif ?>
           <?php endif ?>
           <div id="bottom"></div>
-
         </div>
       </div>
+      <?php include("TicketMenuSection.php"); ?>
     </div>
   </div>
 </div>
