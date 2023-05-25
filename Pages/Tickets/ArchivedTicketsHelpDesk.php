@@ -14,14 +14,13 @@ include($_SERVER['DOCUMENT_ROOT'] . '/Includes/Container.php');
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="h5 text-center">Your tickets</h3>
+                    <h3 class="h5 text-center">Assigned to you</h3>
                 </div>
                 <div class="card-body">
                     <div>
                         <nav>
                             <div class="text-center">
-                                <a href="CreateNewTicket.php" class="btn btn-outline-primary fw-bold">Create new Ticket</a>
-                                <a href="#History" class="btn btn-outline-info fw-bold">See archived Tickets</a>
+
                             </div>
                         </nav>
                     </div>
@@ -41,7 +40,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/Includes/Container.php');
                         <tbody>
                             <?php
 
-                            $ticketsData = $tickets->GetListOfTicketsForGivenUser(true);
+                            $ticketsData = $tickets->GetOnlyTicketsAssignedToUserId(true);
 
                             foreach ($ticketsData as $value) {
                                 $statusStyle = "";

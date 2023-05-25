@@ -20,7 +20,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/Includes/Container.php');
                     <div>
                         <nav>
                             <div class="text-center">
-
+                            <a href="ArchivedTicketsHelpDesk.php" class="btn btn-outline-info fw-bold">See archived Tickets</a>
                             </div>
                         </nav>
                     </div>
