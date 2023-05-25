@@ -248,6 +248,71 @@ class Tickets extends Database
         return $ticketsData;
     }
 
+    public function GetAllTickets($isClosed)
+    {
+        $selectWithStatus = '';
+        if ($isClosed) {
+            $selectWithStatus = "Tick.Status != 'Created' AND Tick.Status != 'InProgress'";
+        } else {
+            $selectWithStatus = "Tick.Status != 'Cancelled' AND Tick.Status != 'Resolved'";
+        }
+
+        $sqlQuery = "SELECT
+                        Tick.Id,
+                        Tick.UniqueId,
+                        Tick.UserId,
+                        CONCAT(u.FirstName, ' ', u.LastName) AS UserFullName,
+                        Tick.Title,
+                        dep.Name AS Department,
+                        Tick.InitialMsg,
+                        Tick.CreatedOn,
+                        Tick.AssignetToUserId,
+                        CONCAT(helpdesk.FirstName, ' ', helpdesk.LastName) AS HelpDeskFullName,
+                        Tick.IsReadByUser,
+                        Tick.IsReadByHelpDesk,
+                        Tick.Status,
+                        Tick.ExpectedCompletionDate,
+                        Tick.AssignedTechnicalId
+                    FROM
+                        Tickets AS Tick
+                    INNER JOIN Departments AS dep
+                    ON
+                        (Tick.DepartmentId = dep.Id)
+                    INNER JOIN Users AS u
+                    ON
+                        (Tick.UserId = u.Id)
+                    LEFT JOIN Users AS helpdesk
+                    ON
+                        (Tick.AssignetToUserId = helpdesk.Id)
+                    WHERE" . $selectWithStatus;
+
+
+        // Prevent SqlInjection using params
+        $stmt = mysqli_prepare($this->context, $sqlQuery);
+        mysqli_stmt_execute($stmt);
+
+        $result = mysqli_stmt_get_result($stmt);
+        $ticketsData = array();
+
+        while ($ticket = mysqli_fetch_assoc($result)) {
+            $ticketRow = array();
+
+            $ticketRow[] = $ticket["UniqueId"];
+            $ticketRow[] = $ticket["Title"];
+            $ticketRow[] = $ticket["Department"];
+            $ticketRow[] = $ticket["HelpDeskFullName"];
+            $ticketRow[] = $ticket["Status"];
+            $ticketRow[] = $ticket["CreatedOn"];
+            $ticketRow[] = $ticket["ExpectedCompletionDate"];
+            $ticketRow[] = $ticket["IsReadByUser"];
+            $ticketRow[] = $ticket["IsReadByHelpDesk"];
+
+            $ticketsData[] = $ticketRow;
+        }
+
+        return $ticketsData;
+    }
+
     public function GetTicketDetailsByUniqueId($uid)
     {
         $sqlQuery = "SELECT

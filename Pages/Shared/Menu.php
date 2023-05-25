@@ -35,6 +35,14 @@
 								</div>
 							</a>
 						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="/Pages/Tickets/TicketsListAdmin.php">
+								<div class="icon-container">
+									<span title="Users"><i data-feather="users"></i></span>
+									<span class="icon-text">Admin ticket view</span>
+								</div>
+							</a>
+						</li>
 					<?php endif ?>
 					<?php if ($users->HaveHelpDeskPermissions()) : ?>
 						<li class="nav-item">

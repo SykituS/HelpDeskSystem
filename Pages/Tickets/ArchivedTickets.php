@@ -20,8 +20,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/Includes/Container.php');
                     <div>
                         <nav>
                             <div class="text-center">
-                                <a href="CreateNewTicket.php" class="btn btn-outline-primary fw-bold">Create new Ticket</a>
-                                <a href="#History" class="btn btn-outline-info fw-bold">See archived Tickets</a>
+                                <a href="TicketsList.php" class="btn btn-outline-info fw-bold">See Created/In Progress Tickets</a>
                             </div>
                         </nav>
                     </div>

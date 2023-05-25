@@ -14,13 +14,13 @@ include($_SERVER['DOCUMENT_ROOT'] . '/Includes/Container.php');
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="h5 text-center">Assigned to you</h3>
+                    <h3 class="h5 text-center">All Created/In progress tickets</h3>
                 </div>
                 <div class="card-body">
                     <div>
                         <nav>
                             <div class="text-center">
-                            <a href="TicketsListHelpDesk.php" class="btn btn-outline-info fw-bold">See Created/In Progress Tickets</a>
+                            <a href="TicketsListAdmin.php" class="btn btn-outline-info fw-bold">See Created/In Progress Tickets</a>
                             </div>
                         </nav>
                     </div>
@@ -40,7 +40,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/Includes/Container.php');
                         <tbody>
                             <?php
 
-                            $ticketsData = $tickets->GetOnlyTicketsAssignedToUserId(true);
+                            $ticketsData = $tickets->GetAllTickets(true);
 
                             foreach ($ticketsData as $value) {
                                 $statusStyle = "";
