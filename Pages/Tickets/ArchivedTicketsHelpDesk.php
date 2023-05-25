@@ -5,6 +5,10 @@ if (!$users->isLoggedIn()) {
     header('Location: /Pages/Account/Login.php');
 }
 
+if (!$users->HaveHelpDeskPermissions()) {
+    header('Location: /Pages/Account/Login.php');
+}
+
 include($_SERVER['DOCUMENT_ROOT'] . '/Includes/Header.php');
 include($_SERVER['DOCUMENT_ROOT'] . '/Pages/Shared/Menu.php');
 include($_SERVER['DOCUMENT_ROOT'] . '/Includes/Container.php');
