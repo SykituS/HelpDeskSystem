@@ -70,14 +70,14 @@ class Tickets extends Database
                         Tick.ExpectedCompletionDate,
                         Tick.AssignedTechnicalId
                     FROM
-                        Tickets AS Tick
-                    INNER JOIN Departments AS dep
+                    " . $this->ticketsTable . " AS Tick
+                    INNER JOIN " . $this->departmentTable . " AS dep
                     ON
                         (Tick.DepartmentId = dep.Id)
-                    INNER JOIN Users AS u
+                    INNER JOIN " . $this->userTable . " AS u
                     ON
                         (Tick.UserId = u.Id)
-                    LEFT JOIN Users AS helpdesk
+                    LEFT JOIN " . $this->userTable . " AS helpdesk
                     ON
                         (Tick.AssignetToUserId = helpdesk.Id)
                     WHERE
@@ -139,14 +139,14 @@ class Tickets extends Database
                         Tick.ExpectedCompletionDate,
                         Tick.AssignedTechnicalId
                     FROM
-                        Tickets AS Tick
-                    INNER JOIN Departments AS dep
+                    " . $this->ticketsTable . " AS Tick
+                    INNER JOIN " . $this->departmentTable . " AS dep
                     ON
                         (Tick.DepartmentId = dep.Id)
-                    INNER JOIN Users AS u
+                    INNER JOIN " . $this->userTable . " AS u
                     ON
                         (Tick.UserId = u.Id)
-                    LEFT JOIN Users AS helpdesk
+                    LEFT JOIN " . $this->userTable . " AS helpdesk
                     ON
                         (Tick.AssignetToUserId = helpdesk.Id)
                     WHERE
@@ -207,23 +207,23 @@ class Tickets extends Database
                         Tick.ExpectedCompletionDate,
                         Tick.AssignedTechnicalId
                     FROM
-                        Tickets AS Tick
-                    INNER JOIN Departments AS dep
+                    " . $this->ticketsTable . " AS Tick
+                    INNER JOIN " . $this->departmentTable . " AS dep
                     ON
                         (Tick.DepartmentId = dep.Id)
-                    INNER JOIN Users AS u
+                    INNER JOIN " . $this->userTable . " AS u
                     ON
                         (Tick.UserId = u.Id)
-                    LEFT JOIN Users AS helpdesk
+                    LEFT JOIN " . $this->userTable . " AS helpdesk
                     ON
                         (Tick.AssignetToUserId = helpdesk.Id)
                     WHERE
-                    Tick.AssignetToUserId = ? AND " . $selectWithStatus;
+                    Tick.AssignetToUserId = ? OR Tick.AssignedTechnicalId = ? AND " . $selectWithStatus;
 
 
         // Prevent SqlInjection using params
         $stmt = mysqli_prepare($this->context, $sqlQuery);
-        mysqli_stmt_bind_param($stmt, "s", $userId);
+        mysqli_stmt_bind_param($stmt, "ss", $userId, $userId);
         mysqli_stmt_execute($stmt);
 
         $result = mysqli_stmt_get_result($stmt);
@@ -274,17 +274,17 @@ class Tickets extends Database
                         Tick.ExpectedCompletionDate,
                         Tick.AssignedTechnicalId
                     FROM
-                        Tickets AS Tick
-                    INNER JOIN Departments AS dep
+                    " . $this->ticketsTable . " AS Tick
+                    INNER JOIN " . $this->departmentTable . " AS dep
                     ON
                         (Tick.DepartmentId = dep.Id)
-                    INNER JOIN Users AS u
+                    INNER JOIN " . $this->userTable . " AS u
                     ON
                         (Tick.UserId = u.Id)
-                    LEFT JOIN Users AS helpdesk
+                    LEFT JOIN " . $this->userTable . " AS helpdesk
                     ON
                         (Tick.AssignetToUserId = helpdesk.Id)
-                    WHERE" . $selectWithStatus;
+                    WHERE " . $selectWithStatus;
 
 
         // Prevent SqlInjection using params
@@ -332,14 +332,14 @@ class Tickets extends Database
                         Tick.ExpectedCompletionDate,
                         Tick.AssignedTechnicalId
                     FROM
-                        Tickets AS Tick
-                    INNER JOIN Departments AS dep
+                    " . $this->ticketsTable . " AS Tick
+                    INNER JOIN " . $this->departmentTable . " AS dep
                     ON
                         (Tick.DepartmentId = dep.Id)
-                    INNER JOIN Users AS u
+                    INNER JOIN " . $this->userTable . " AS u
                     ON
                         (Tick.UserId = u.Id)
-                    LEFT JOIN Users AS helpdesk
+                    LEFT JOIN " . $this->userTable . " AS helpdesk
                     ON
                         (Tick.AssignetToUserId = helpdesk.Id)
                     WHERE
@@ -352,6 +352,19 @@ class Tickets extends Database
 
         $result = mysqli_stmt_get_result($stmt);
         $ticket = mysqli_fetch_assoc($result);
+
+        // Updating ticket data to show new message for other side
+        $sqlUpdate = "";
+        if ($_SESSION["Role"] == "HelpDesk" || $_SESSION["Role"] == "Admin") {
+            $sqlUpdate = "UPDATE " . $this->ticketsTable . " SET `IsReadByHelpDesk`=1 WHERE `UniqueId` = ?";
+        } else {
+            $sqlUpdate = "UPDATE " . $this->ticketsTable . " SET `IsReadByUser`=1 WHERE `UniqueId` = ?";
+        }
+
+        $stmtUpdate = mysqli_prepare($this->context, $sqlUpdate);
+        mysqli_stmt_bind_param($stmtUpdate, "s", $uid);
+        mysqli_stmt_execute($stmtUpdate);
+
         return $ticket;
     }
 
@@ -365,8 +378,8 @@ class Tickets extends Database
                         CONCAT(u.FirstName, ' ', u.LastName) AS ResponseUser,
                         resp.CreatedOn
                     FROM
-                        TicketResponse AS resp
-                    INNER JOIN Users AS u
+                    " . $this->ticketsResponseTable . " AS resp
+                    INNER JOIN " . $this->userTable . " AS u
                     ON
                         u.Id = resp.ResponseBy
                     WHERE
@@ -410,17 +423,30 @@ class Tickets extends Database
         $createdBy = $_SESSION["UserId"];
         $createDate = date('Y-m-d H:i:s');
 
-        $sqlInsert = "INSERT INTO `TicketResponse`(`UniqueTicketId`, `ResponseMsg`, `ResponseBy`, `CreatedOn`) VALUES (?, ?, ?, ?)";
+        $sqlInsert = "INSERT INTO " . $this->ticketsResponseTable . "(`UniqueTicketId`, `ResponseMsg`, `ResponseBy`, `CreatedOn`) VALUES (?, ?, ?, ?)";
 
         // Prevent SqlInjection using params
         $stmt = mysqli_prepare($this->context, $sqlInsert);
         mysqli_stmt_bind_param($stmt, "ssss", $uid, $message, $createdBy, $createDate);
         mysqli_stmt_execute($stmt);
 
+        // Updating ticket data to show new message for other side
+        $sqlUpdate = "UPDATE " . $this->ticketsTable . " SET `IsReadByUser`=?, `IsReadByHelpDesk`=? WHERE `UniqueId` = ?;";
+        $stmt = mysqli_prepare($this->context, $sqlUpdate);
+        if ($_SESSION["Role"] == "HelpDesk" || $_SESSION["Role"] == "Admin") {
+            mysqli_stmt_bind_param($stmt, "sss", 0, 1, $uid);
+        } else {
+            mysqli_stmt_bind_param($stmt, "sss", 1, 0, $uid);
+        }
+        mysqli_stmt_execute($stmt);
+
+        // Set success message and refresh page to prevent sending form again
         $_SESSION['SuccessMessage'] = "Response created successfully";
         header("location: ../Tickets/Ticket.php?Id=" . $uid);
+
         // move user to bottom of the page
         echo '<script>window.location.hash = "#bottom";</script>';
+
         return $errorMessage;
     }
 
@@ -433,5 +459,9 @@ class Tickets extends Database
         $stmt = mysqli_prepare($this->context, $sqlUpdate);
         mysqli_stmt_bind_param($stmt, "sss", $userId, $status, $ticketId);
         mysqli_stmt_execute($stmt);
+    }
+
+    public function UpdateTicketStatus()
+    {
     }
 }

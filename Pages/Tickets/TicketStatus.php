@@ -5,7 +5,14 @@ if (!$users->isLoggedIn()) {
     header('Location: /Pages/Account/Login.php');
 }
 
-$errorMessage = $tickets->CreateNewTicket();
+if (!isset($_GET["Id"])) {
+    header('Location: /Pages/Shared/Error.php');
+}
+
+$ticketId = $_GET["Id"];
+$ticketDetails = $tickets->GetTicketDetailsByUniqueId($ticketId);
+
+$errorMessage = $tickets->UpdateTicketStatus();
 
 include($_SERVER['DOCUMENT_ROOT'] . '/Includes/Header.php');
 include($_SERVER['DOCUMENT_ROOT'] . '/Includes/Container.php');
@@ -19,13 +26,14 @@ include($_SERVER['DOCUMENT_ROOT'] . '/Pages/Shared/Menu.php');
     </div>
     <div class="card-body">
         <form id="createNewTicketForm" class="form-horizontal" role="form" method="POST" action="">
+            <input type="hidden" name="Id" value="<?php echo $userDetails["Id"]; ?>" />
             <div class="text-center">
                 <div class="">
                     <select class="form-select" id="Status" name="Status" required>
-                        <option value="Created">Created</option>
-                        <option value="InProgress">In Progress</option>
-                        <option value="Resolved">Resolved</option>
-                        <option value="Cancelled">Cancelled</option>
+                        <option value="Created" <?php echo $ticketDetails['Status'] == 'Created' ? 'selected' : '' ?>>Created</option>
+                        <option value="InProgress" <?php echo $ticketDetails['Status'] == 'InProgress' ? 'selected' : '' ?>>In Progress</option>
+                        <option value="Resolved" <?php echo $ticketDetails['Status'] == 'Resolved' ? 'selected' : '' ?>>Resolved</option>
+                        <option value="Cancelled" <?php echo $ticketDetails['Status'] == 'Cancelled' ? 'selected' : '' ?>>Cancelled</option>
                     </select>
                 </div>
             </div>
