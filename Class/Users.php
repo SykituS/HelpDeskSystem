@@ -115,8 +115,25 @@ class Users extends Database
 
     public function GetLoggedUserInfo()
     {
-        $numOpenedTicekts = 0;
-        $numClosedTicekts = 0;
+        $userId = $_SESSION["UserId"];
+
+        $sqlQuery = "SELECT
+                        COUNT(CASE WHEN Status IN ('Created', 'InProgress') THEN 1 END) AS OpenedTickets,
+                        COUNT(CASE WHEN Status IN ('Resolved', 'Cancelled') THEN 1 END) AS ClosedTickets
+                    FROM
+                        " . $this->ticketsTable . "
+                    WHERE
+                        UserId = ?";
+
+        // Prevent SqlInjection using params
+        $stmt = mysqli_prepare($this->context, $sqlQuery);
+        mysqli_stmt_bind_param($stmt, "s", $userId);
+        mysqli_stmt_execute($stmt);
+
+        $result = mysqli_stmt_get_result($stmt);
+        $userData = mysqli_fetch_assoc($result);
+
+        return $userData;
     }
 
     public function GetUserInfoById($Id)
