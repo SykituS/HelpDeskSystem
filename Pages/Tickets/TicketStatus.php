@@ -25,8 +25,8 @@ include($_SERVER['DOCUMENT_ROOT'] . '/Pages/Shared/Menu.php');
         <h1 class="h3 mb-3 fw-normal">Change status: </h1>
     </div>
     <div class="card-body">
-        <form id="createNewTicketForm" class="form-horizontal" role="form" method="POST" action="">
-            <input type="hidden" name="Id" value="<?php echo $userDetails["Id"]; ?>" />
+        <form id="updateTicketStatusFrom" class="form-horizontal" role="form" method="POST" action="">
+            <input type="hidden" name="UId" value="<?php echo $ticketId; ?>" />
             <div class="text-center">
                 <div class="">
                     <select class="form-select" id="Status" name="Status" required>
@@ -42,7 +42,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/Pages/Shared/Menu.php');
     <div class="card-footer pt-4">
         <div class="d-grid col-4 mx-auto pb-3 gap-2">
             <a class="btn btn-outline-secondary" onclick="goBack()">Go back</a>
-            <input type="submit" name="CreateNewTicket" value="Create ticket" class="btn btn-outline-primary">
+            <input type="submit" name="UpdateTicketStatus" value="Edit status" class="btn btn-outline-primary">
         </div>
         <?php if ($errorMessage != '') { ?>
             <div class="mt-2">

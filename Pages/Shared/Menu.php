@@ -38,7 +38,7 @@
 						<li class="nav-item">
 							<a class="nav-link" href="/Pages/Tickets/TicketsListAdmin.php">
 								<div class="icon-container">
-									<span title="Users"><i data-feather="users"></i></span>
+									<span title="Users"><i data-feather="layers"></i></span>
 									<span class="icon-text">Admin ticket view</span>
 								</div>
 							</a>

@@ -68,8 +68,8 @@ include($_SERVER['DOCUMENT_ROOT'] . '/Pages/Shared/Menu.php');
                         <?php
                         $departmentList = $depatments->getAllDepartments();
                         foreach ($departmentList as $value) {
-                            $isInRole = $value[0] == $userDetails["Role"] ? "Selected" : "";
-                            echo '<option value="' . $value[0] . '" ' . $isInRole . '>' . $value[1] . '</option>';
+                            $isInDepartment = $value[0] == $userDetails["DepartmentId"] ? "Selected" : "";
+                            echo '<option value="' . $value[0] . '" ' . $isInDepartment . '>' . $value[1] . '</option>';
                         }
 
                         ?>

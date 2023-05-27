@@ -218,7 +218,7 @@ class Tickets extends Database
                     ON
                         (Tick.AssignetToUserId = helpdesk.Id)
                     WHERE
-                    Tick.AssignetToUserId = ? OR Tick.AssignedTechnicalId = ? AND " . $selectWithStatus;
+                    (Tick.AssignetToUserId = ? OR Tick.AssignedTechnicalId = ?) AND " . $selectWithStatus;
 
 
         // Prevent SqlInjection using params
@@ -321,6 +321,7 @@ class Tickets extends Database
                         Tick.UserId,
                         CONCAT(u.FirstName, ' ', u.LastName) AS UserFullName,
                         Tick.Title,
+                        Tick.DepartmentId,
                         dep.Name AS Department,
                         Tick.InitialMsg,
                         Tick.CreatedOn,
@@ -330,7 +331,8 @@ class Tickets extends Database
                         Tick.IsReadByHelpDesk,
                         Tick.Status,
                         Tick.ExpectedCompletionDate,
-                        Tick.AssignedTechnicalId
+                        Tick.AssignedTechnicalId,
+                        CONCAT(tech.FirstName, ' ', tech.LastName) AS TechnicialFullName
                     FROM
                     " . $this->ticketsTable . " AS Tick
                     INNER JOIN " . $this->departmentTable . " AS dep
@@ -342,6 +344,9 @@ class Tickets extends Database
                     LEFT JOIN " . $this->userTable . " AS helpdesk
                     ON
                         (Tick.AssignetToUserId = helpdesk.Id)
+                    LEFT JOIN " . $this->userTable . " AS tech
+                    ON
+                        (Tick.AssignedTechnicalId = tech.Id)
                     WHERE
                         Tick.UniqueId = ?";
 
@@ -463,5 +468,53 @@ class Tickets extends Database
 
     public function UpdateTicketStatus()
     {
+        $errorMessage = '';
+
+        if (empty($_POST["UpdateTicketStatus"])) {
+            return $errorMessage;
+        }
+
+        $uid = $_POST["UId"];
+        $status = $_POST["Status"];
+
+        $sqlUpdate = "UPDATE " . $this->ticketsTable . " SET `Status`=? WHERE `UniqueId`=?";
+
+        $stmt = mysqli_prepare($this->context, $sqlUpdate);
+        mysqli_stmt_bind_param($stmt, "ss", $status, $uid);
+        mysqli_stmt_execute($stmt);
+
+        header("location: ../Tickets/Ticket.php?Id=" . $uid);
+        return $errorMessage;
+    }
+
+    public function EditTicketData()
+    {
+        $errorMessage = '';
+
+        if (empty($_POST["EditTicketData"])) {
+            return $errorMessage;
+        }
+
+        $expectedFinishDate = $_POST["ExpectedFinishDate"];
+        if ($_POST["ExpectedFinishDate"] == '') {
+            $expectedFinishDate = null;
+        }
+
+        $technicial = $_POST["Technicial"];
+        if ($_POST["Technicial"] == '') {
+            $technicial = null;
+        }
+
+        $department = $_POST["Department"];
+        $uid = $_POST["UId"];
+
+        $sqlUpdate = "UPDATE " . $this->ticketsTable . " SET `DepartmentId`=?, `ExpectedCompletionDate`=?, `AssignedTechnicalId`=? WHERE `UniqueId`=?";
+
+        $stmt = mysqli_prepare($this->context, $sqlUpdate);
+        mysqli_stmt_bind_param($stmt, "ssss", $department, $expectedFinishDate, $technicial, $uid);
+        mysqli_stmt_execute($stmt);
+
+        header("location: ../Tickets/Ticket.php?Id=" . $uid);
+        return $errorMessage;
     }
 }

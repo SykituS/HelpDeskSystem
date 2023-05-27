@@ -45,6 +45,27 @@ if (isset($_SESSION["SuccessMessage"])) {
   </script>';
 }
 
+$statusStyle = "";
+$statusText = "";
+switch ($ticketDetails["Status"]) {
+  case "Created":
+    $statusStyle = "badge text-bg-secondary";
+    $statusText = "Created";
+    break;
+  case "InProgress":
+    $statusStyle = "badge text-bg-primary";
+    $statusText = "In Progress";
+    break;
+  case "Resolved":
+    $statusStyle = "badge text-bg-success";
+    $statusText = "Resolved";
+    break;
+  case "Cancelled":
+    $statusStyle = "badge text-bg-warning";
+    $statusText = "Cancelled";
+    break;
+}
+
 ?>
 <div class="container mt-5">
   <div class="row">
@@ -66,7 +87,7 @@ if (isset($_SESSION["SuccessMessage"])) {
 
             </div>
             <div class="col-md-6">
-              <p><strong>Status: </strong><span class="badge bg-secondary"><?php echo $ticketDetails["Status"] ?></span></p>
+              <p><strong>Status: </strong><span class="<?php echo $statusStyle ?>"><?php echo $statusText ?></span></p>
               <p><strong>Created Date:</strong> <?php echo $ticketDetails["CreatedOn"] ?></p>
             </div>
           </div>
@@ -74,7 +95,7 @@ if (isset($_SESSION["SuccessMessage"])) {
             <h3>Additional information</h3>
             <?php if ($ticketDetails["AssignedTechnicalId"] != '') : ?>
               <div class="col-md-6">
-                <p><strong>Technicial helper:</strong> <?php echo $ticketDetails["AssignedTechnicalId"] ?></p>
+                <p><strong>Technicial helper:</strong> <?php echo $ticketDetails["TechnicialFullName"] ?></p>
               </div>
             <?php endif ?>
             <?php if ($ticketDetails["ExpectedCompletionDate"] != '') : ?>

@@ -213,6 +213,26 @@ class Users extends Database
         return $errorMessage;
     }
 
+    public function GetListOfHelpDeskAdminUsers()
+    {
+        $sqlQuery = "SELECT u.Id, CONCAT(dep.Name, ' | ', u.FirstName, ' ', u.LastName, ' | ', u.Role) AS FullNameWithDepartment
+                        FROM " . $this->userTable . " as u INNER JOIN " . $this->departmentTable . " as dep 
+                        ON u.DepartmentId = dep.Id WHERE `Role` = 'HelpDesk' OR `Role` = 'Admin' Order by dep.Name Desc, u.Role ASC";
+
+        $result = mysqli_query($this->context, $sqlQuery);
+        $userData = array();
+
+        while ($user = mysqli_fetch_assoc($result)) {
+            $userRows = array();
+            $userRows[] = $user["Id"];
+            $userRows[] = $user["FullNameWithDepartment"];
+
+            $userData[] = $userRows;
+        }
+
+        return $userData;
+    }
+
     public function IsActive($userId)
     {
         $sqlQuery = "SELECT Status FROM " . $this->userTable . " WHERE `Id` = ?";
