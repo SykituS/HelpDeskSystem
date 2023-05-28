@@ -55,31 +55,36 @@ class Users extends Database
 
         if (!empty($_POST["Login"]) && $_POST["Email"] != '' && $_POST["Password"] != '') {
             $email = strip_tags($_POST["Email"]);
-            $password = md5($_POST["Password"]);
+            $password = $_POST["Password"];
             $sqlQuery = "SELECT * FROM " . $this->userTable . "
-                            WHERE email=? AND password=? AND status = 1";
+                        WHERE email=? AND status = 1";
 
             // Prevent SqlInjection using params
             $stmt = mysqli_prepare($this->context, $sqlQuery);
-            mysqli_stmt_bind_param($stmt, "ss", $email, $password);
+            mysqli_stmt_bind_param($stmt, "s", $email);
             mysqli_stmt_execute($stmt);
 
             mysqli_stmt_store_result($stmt);
             $rowCount = mysqli_stmt_num_rows($stmt);
 
             if ($rowCount == 1) {
-                mysqli_stmt_bind_result($stmt, $id, $email, $password, $firstName, $lastName, $role, $status, $department, $created);
+                mysqli_stmt_bind_result($stmt, $id, $email, $storedPassword, $firstName, $lastName, $role, $status, $department, $created);
                 mysqli_stmt_fetch($stmt);
-                if ($status != 1) {
-                    $errorMessage = "Your account is disabled!";
-                    return $errorMessage;
-                }
 
-                $_SESSION["UserId"] = $id;
-                $_SESSION["UserFirstName"] = $firstName;
-                $_SESSION["UserLastName"] = $lastName;
-                $_SESSION["Role"] = $role;
-                header("location: ../MainPage/Main.php");
+                if (password_verify($password, $storedPassword)) {
+                    if ($status != 1) {
+                        $errorMessage = "Your account is disabled!";
+                        return $errorMessage;
+                    }
+
+                    $_SESSION["UserId"] = $id;
+                    $_SESSION["UserFirstName"] = $firstName;
+                    $_SESSION["UserLastName"] = $lastName;
+                    $_SESSION["Role"] = $role;
+                    header("location: ../MainPage/Main.php");
+                } else {
+                    $errorMessage = "Invalid login";
+                }
             } else {
                 $number = rand(0, 999);
                 switch ($number) {
@@ -215,7 +220,7 @@ class Users extends Database
             return $errorMessage = 'Provided passwords is not the same';
         }
 
-        $passwordHash = md5($password);
+        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
         $createDate = date('Y-m-d H:i:s');
         $sqlInsertQuery = "INSERT INTO " . $this->userTable . "(Email, Password, FirstName, LastName, Role, Status, DepartmentId, CreatedOn) VALUES (
             ?, ?, ?, ?, ?, 1, ?, ?)";
@@ -266,7 +271,7 @@ class Users extends Database
 
     public function ChangeActiveStatusForUser($userId)
     {
-        $sqlUpdate = "UPDATE `Users` SET `Status`= not `Status` WHERE `Id` = ?";
+        $sqlUpdate = "UPDATE `" . $this->userTable . "` SET `Status`= not `Status` WHERE `Id` = ?";
 
         // Prevent SqlInjection using params
         $stmt = mysqli_prepare($this->context, $sqlUpdate);
@@ -311,7 +316,7 @@ class Users extends Database
 
         $sqlUpdate = "";
         if ($_POST["Password"] == '') {
-            $sqlUpdate = "UPDATE `Users` SET `Email`=?, `FirstName`=?, `LastName`=?, `Role`=?, `DepartmentId`=? WHERE `Id`=?";
+            $sqlUpdate = "UPDATE `" . $this->userTable . "` SET `Email`=?, `FirstName`=?, `LastName`=?, `Role`=?, `DepartmentId`=? WHERE `Id`=?";
             $stmt = mysqli_prepare($this->context, $sqlUpdate);
             mysqli_stmt_bind_param($stmt, "ssssss", $email, $firstName, $lastName, $role, $department, $_POST["Id"]);
         } else {
@@ -321,8 +326,8 @@ class Users extends Database
                 return $errorMessage = 'Provided passwords is not the same';
             }
 
-            $passwordHash = md5($password);
-            $sqlUpdate = "UPDATE `Users` SET `Email`=?, `Password`=?, `FirstName`=?, `LastName`=?, `Role`=?, `DepartmentId`=? WHERE `Id`=?";
+            $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+            $sqlUpdate = "UPDATE `" . $this->userTable . "` SET `Email`=?, `Password`=?, `FirstName`=?, `LastName`=?, `Role`=?, `DepartmentId`=? WHERE `Id`=?";
             $stmt = mysqli_prepare($this->context, $sqlUpdate);
             mysqli_stmt_bind_param($stmt, "ssssss", $email, $passwordHash, $firstName, $lastName, $role, $department, $_POST["Id"]);
         }

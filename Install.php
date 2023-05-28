@@ -1,89 +1,218 @@
 <?php
+session_start();
 
-function url_origin($s, $use_forwarded_host = false)
-{
-    $ssl      = (!empty($s['HTTPS']) && $s['HTTPS'] == 'on');
-    $sp       = strtolower($s['SERVER_PROTOCOL']);
-    $protocol = substr($sp, 0, strpos($sp, '/')) . (($ssl) ? 's' : '');
-    $port     = $s['SERVER_PORT'];
-    $port     = ((!$ssl && $port == '80') || ($ssl && $port == '443')) ? '' : ':' . $port;
-    $host     = ($use_forwarded_host && isset($s['HTTP_X_FORWARDED_HOST'])) ? $s['HTTP_X_FORWARDED_HOST'] : (isset($s['HTTP_HOST']) ? $s['HTTP_HOST'] : null);
-    $host     = isset($host) ? $host : $s['SERVER_NAME'] . $port;
-    return $protocol . '://' . $host;
+const configFile = "Configuration/Config.php";
+if (!isset($_SESSION["Step"])) {
+    $_SESSION["Step"] = 0;
 }
 
-function full_url($s, $use_forwarded_host = false)
-{
-    return url_origin($s, $use_forwarded_host) . $s['REQUEST_URI'];
+if (isset($_POST["InstallServer"]) && $_SESSION["Step"] == 1) {
+    $_SESSION["Step"] = 2;
 }
 
-$url = pathinfo(full_url($_SERVER));
+if (isset($_POST["InstallBaseData"]) && $_SESSION["Step"] == 4) {
+    $_SESSION["Step"] = 5;
+}
 
-$base_url = $url['dirname'] . "/";
-echo $base_url;
-?>
+switch ($_SESSION["Step"]) {
+    case 1:
+        GenerateInstallForm();
+        break;
 
-<!-- Header file -->>
-<!DOCTYPE html>
-<html>
+    case 2:
+        SaveConfig();
+        break;
 
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    case 3:
+        ImportDataBase();
+        break;
 
-    <!-- Custom css -->
-    <link rel="stylesheet" href="/Scripts/css/style.css">
+    case 4:
+        GenerateInstallDataForm();
+        break;
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    case 5:
+        ImportDataFromForm();
+        break;
 
-    <title>Install Helpdesk System</title>
-</head>
-<!-- Start of body tag and creating conatiner -->
+    case 6:
+        InsertAdminAccountToDataBase();
+        break;
 
-<body class="d-flex flex-column min-vh-100">
-    <div class="container">
-        <div class="card text-center">
-            <div class="card-header">Instalator systemu HelpDesk</div>
-            <form action="">
-                <div class="card-body">
-                    <div class="">
-                        <div class="form-floating">
-                            <input type="Text" class="form-control" id="Title" name="Title" placeholder="Title" required>
-                            <label for="Title">Nazwa lub adres serwera</label>
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <div class="form-floating">
-                            <input type="Text" class="form-control" id="Title" name="Title" placeholder="Title" required>
-                            <label for="Title">Nazwa bazy danych</label>
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <div class="form-floating">
-                            <input type="Text" class="form-control" id="Title" name="Title" placeholder="Title" required>
-                            <label for="Title">Nazwa użytkownika</label>
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <div class="form-floating">
-                            <input type="password" class="form-control" id="Title" name="Title" placeholder="Title" required>
-                            <label for="Title">Hasło</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <input type="submit" name="Contiune" value="Kontynuuj" class="btn btn-outline-primary">
-                </div>
-            </form>
-        </div>
-    </div>
-    <footer class="footer mt-auto py-3">
-        <div id="special-container">
+    case 7:
+        FinishInstallationProcess();
+        break;
 
-        </div>
-        <div class="border-bottom pb-3 mb-3"></div>
-        <p id="random-text" class="text-center text-muted">&copy; 2023 HelpDesk System</p>
-    </footer>
-</body>
+    default:
+        echo "<h2>Instalator aplikacji</h2>";
+        echo "<h3>Postępuj zgodnie z instrukcjami</h3>";
+        if (file_exists(configFile)) {
+            if (is_writable(configFile)) {
+                $_SESSION["Step"] = 1;
+                echo "<p>Rozpoczynanie instalacji!</p>";
+                echo '<script>
+                        setTimeout(function() {
+                            location.reload();
+                        }, 1000);
+                    </script>';
+            } else {
+                echo "<p>Zmień uprawnienia do pliku <code>" . configFile . "</code><br>np. <code>chmod o+w " . configFile . "</code></p>";
+                echo "<p><button class=`btn btn-info' onClick='window.location.href=window.location.href'>Odśwież stronę</button></p>";
+            }
+        } else {
+            echo "<p>Stwórz plik <code>" . configFile . "</code><br>np. <code>touch " . configFile . "</code><br>Po czym odśwież strone</p>";
+            echo "<p><button class=`btn btn-info' onClick='window.location.href=window.location.href'>Odśwież stronę</button></p>";
+        }
 
-</html>
+        break;
+}
+
+function GenerateInstallForm()
+{
+    include("Configuration/InstallationResources/InstallServer.php");
+}
+
+function SaveConfig()
+{
+    $file = fopen(configFile, "w");
+    $prefix = "";
+    if ($_POST['Prefix'] != "") {
+        $prefix = $_POST['Prefix'] . "_";
+    }
+    $config = "<?php
+                \$host=\"" . $_POST['Host'] . "\";
+                \$user=\"" . $_POST['User'] . "\";
+                \$password=\"" . $_POST['Password'] . "\";
+                \$database=\"" . $_POST['DBName'] . "\";
+                \$prefix=\"" . $prefix . "\";
+                \$link = mysqli_connect(\$host, \$user, \$password, \$database);\n";
+
+    if (!fwrite($file, $config)) {
+        print "Nie mogę zapisać do pliku ($file)";
+        exit;
+    }
+    fclose($file);
+    $_SESSION["Step"] = 3;
+    echo "<p>Plik konfiguracyjny utworzony. Strona zostanie odświeżona!</p>";
+    echo "<script>
+            setTimeout(function() {
+                location.reload();
+            }, 2500);
+        </script>";
+}
+
+function ImportDataBase()
+{
+    echo "<p>Tworzenie bazy danych ...</p>";
+
+    if (file_exists("DataBase/Sql.php")) {
+        include("Configuration/Config.php");
+        include("DataBase/Sql.php");
+
+        echo "Tworzę tabele bazy: " . $database . ".<br>\n";
+        mysqli_select_db($link, $database) or die(mysqli_error($link));
+        for ($i = 0; $i < count($create); $i++) {
+            echo "<p>" . $i . ". <code>" . $create[$i] . "</code></p>\n";
+            mysqli_query($link, $create[$i]);
+        }
+        echo "<p>Baza została utworzona! Strona zostanie odświeżona</p>";
+        echo "<script>
+            setTimeout(function() {
+                location.reload();
+            }, 2500);
+        </script>";
+        $_SESSION["Step"] = 4;
+    } else {
+        echo "<p>Skrypt do tworzenia bazy nie istnieje!<br> Upewnij się że plik znajduje się w folderze: <code>DataBase</code></p>";
+    }
+}
+
+
+function GenerateInstallDataForm()
+{
+    include("Configuration/InstallationResources/InstallData.php");
+}
+
+function ImportDataFromForm()
+{
+    $config = "\n# konfiguracja aplikacji\n
+        \$baseUrl=\"" . $_POST['BaseUrl'] . "\";
+        \$applicationName=\"" . $_POST['ApplicationName'] . "\";
+        \$dateOfCreation=\"" . $_POST['DateOfCreation'] . "\";
+        \$version=\"" . $_POST['Version'] . "\";
+        \$companyName=\"" . $_POST['CompanyName'] . "\";
+        \$companyStreet=\"" . $_POST['CompanyStreet'] . "\";
+        \$companyCity=\"" . $_POST['CompanyCity'] . "\";
+        \$companyPhone=\"" . $_POST['CompanyPhone'] . "\";
+        ";
+    if (is_writable(configFile)) {
+        if (!$uchwyt = fopen(configFile, 'a')) {
+            echo "Nie mogę otworzyć pliku (" . configFile . ")";
+            exit;
+        }
+        if (fwrite($uchwyt, $config) == FALSE) {
+            echo "Nie mogę zapisać do pliku (" . configFile . ")";
+            exit;
+        }
+        echo "Sukces, zapisano (<code>konfigurację</code>) do pliku (" . configFile . "). Strona zostanie odświeżona";
+        fclose($uchwyt);
+        $_SESSION["Step"] = 6;
+        echo "<script>
+            setTimeout(function() {
+                location.reload();
+            }, 2500);
+        </script>";
+    } else {
+        echo "Plik " . configFile . " nie jest zapisywalny! <br> Zmień uprawnienia i odśwież stronę!";
+    }
+}
+
+function InsertAdminAccountToDataBase()
+{
+    include("Configuration/Config.php");
+
+    $passwordHash = password_hash($_POST["Password"], PASSWORD_DEFAULT);
+    $createDate = date('Y-m-d H:i:s');
+
+    $insert[] = "INSERT INTO `" . $prefix . "Departments` (`Name`) VALUES ('" . $_POST["Department"] . "')";
+    $insert[] .= "INSERT INTO `" . $prefix . "Users`(
+        `Email`,
+        `Password`,
+        `FirstName`,
+        `LastName`,
+        `Role`,
+        `Status`,
+        `DepartmentId`,
+        `CreatedOn`
+    )
+    VALUES(
+        '" . $_POST["Email"] . "',
+        '" . $passwordHash . "',
+        '" . $_POST["FirstName"] . "',
+        '" . $_POST["LastName"] . "',
+        'Admin',
+        '1',
+        '1',
+        '" . $createDate . "'
+    )";
+
+    mysqli_select_db($link, $database) or die(mysqli_error($link));
+    for ($i = 0; $i < count($insert); $i++) {
+        echo "<p>" . $i . ". <code>" . $insert[$i] . "</code></p>\n";
+        mysqli_query($link, $insert[$i]);
+    }
+
+    echo "<p>Utworzono konto administratora! Strona zostanie odświeżona</p>";
+    echo "<script>
+            setTimeout(function() {
+                location.reload();
+            }, 2500);
+        </script>";
+    $_SESSION["Step"] = 7;
+}
+
+function FinishInstallationProcess()
+{
+    echo "Koniec";
+    session_destroy();
+}

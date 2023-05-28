@@ -6,6 +6,7 @@ define("Host", $host);
 define("User", $user);
 define("Password", $password);
 define("Database", $database);
+define("Prefix", $prefix);
 
 require($_SERVER['DOCUMENT_ROOT'] . '/Class/Database.php');
 require($_SERVER['DOCUMENT_ROOT'] . '/Class/Users.php');

@@ -29,6 +29,7 @@ Instrukcja instalacji projektu, w tym do jakich plików i do jakich katalogów n
 - bootstrap 5.2.3
 - jquery 3.6.0
 - feather icons
+- Flastpicker -> Wybieranie daty
 
 ## Development
 

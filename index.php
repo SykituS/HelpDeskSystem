@@ -5,10 +5,6 @@ if (!file_exists("Configuration/Config.php")) {
 } else {
     include 'Configuration/init.php';
 
-    if (!$database->checkDbConnection()) {
-        header("Location: Install.php");
-    }
-
     if (!$users->IsLoggedIn()) {
         header("Location: Pages/Account/Login.php");
     } else {
