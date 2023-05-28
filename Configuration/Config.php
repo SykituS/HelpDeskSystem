@@ -9,11 +9,11 @@
 # konfiguracja aplikacji
 
         $baseUrl="localhost";
-        $applicationName="help";
-        $dateOfCreation="2023-05-28 09:56:40";
+        $applicationName="HelpDeskSystem";
+        $dateOfCreation="2023-05-28 10:22:09";
         $version="1.1";
-        $companyName="HelpDeskSystems";
-        $companyStreet="Jana";
-        $companyCity="Łódź";
-        $companyPhone="123123123";
+        $companyName="HP cop.";
+        $companyStreet="Łąkowa 22";
+        $companyCity="Przygoń";
+        $companyPhone="531897688";
         

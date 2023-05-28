@@ -28,7 +28,16 @@
         <div class="card text-center">
             <div class="card-header">Instalator systemu HelpDesk | Zakończono</div>
             <div class="card-body">
-                
+                <div class="card-text">Pomyślnie ukończono instalację aplikacji</div>
+                <div class="card-text">Do zalogowania się proszę uzyć utworzonego przed chwilą konta administratora: <?php echo $_POST["Email"] ?></div>
+                <div class="card-text">
+                    Po zamknięciu tej strony można usunąć następujące pliki: <br>
+                    Plik: <code>Install.php</code><br>
+                    Folder: <code>InstallationResources</code> znajdujący się w folderze <code>Configuration</code>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="index.php" class="btn btn-outline-primary">Zakończ instalacje i przejdź do aplikacji</a>
             </div>
         </div>
     </div>

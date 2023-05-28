@@ -213,6 +213,6 @@ function InsertAdminAccountToDataBase()
 
 function FinishInstallationProcess()
 {
-    echo "Koniec";
+    include("Configuration/InstallationResources/InstallFinish.php");
     session_destroy();
 }
