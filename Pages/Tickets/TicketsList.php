@@ -1,13 +1,13 @@
 <?php
-include($_SERVER['DOCUMENT_ROOT'] . '/Configuration/Init.php');
+include(__DIR__ . '/../../Configuration/Init.php');
 
 if (!$users->isLoggedIn()) {
     header('Location: /Pages/Account/Login.php');
 }
 
-include($_SERVER['DOCUMENT_ROOT'] . '/Includes/Header.php');
-include($_SERVER['DOCUMENT_ROOT'] . '/Pages/Shared/Menu.php');
-include($_SERVER['DOCUMENT_ROOT'] . '/Includes/Container.php');
+include(__DIR__ . '/../../Includes/Header.php');
+include(__DIR__ . '/../../Includes/Container.php');
+include(__DIR__ . '/../../Pages/Shared/Menu.php');
 ?>
 <div class="container mt-5">
     <div class="row">
@@ -60,4 +60,4 @@ include($_SERVER['DOCUMENT_ROOT'] . '/Includes/Container.php');
     }
 </script>
 
-<?php include($_SERVER['DOCUMENT_ROOT'] . '/Includes/Footer.php'); ?>
+<?php include(__DIR__ . '/../../Includes/Footer.php'); ?>

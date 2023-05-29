@@ -3,17 +3,17 @@
                 $user="lamp_docker";
                 $password="lamp_docker";
                 $database="HelpDesk";
-                $prefix="hd_";
+                $prefix="";
                 $link = mysqli_connect($host, $user, $password, $database);
 
 # konfiguracja aplikacji
 
         $baseUrl="localhost";
-        $applicationName="HelpDeskSystem";
-        $dateOfCreation="2023-05-28 10:22:09";
-        $version="1.1";
-        $companyName="HP cop.";
-        $companyStreet="Łąkowa 22";
-        $companyCity="Przygoń";
-        $companyPhone="531897688";
+        $applicationName="HelpDesk";
+        $dateOfCreation="2023-05-29 10:36:55";
+        $version="v1";
+        $companyName="HelpDesk Cop";
+        $companyStreet="Jana";
+        $companyCity="Łódź";
+        $companyPhone="123123123";
         

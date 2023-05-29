@@ -1,5 +1,5 @@
 <?php
-include($_SERVER['DOCUMENT_ROOT'] . '/Configuration/Init.php');
+include(__DIR__ . '/../../Configuration/Init.php');
 
 if (!$users->isLoggedIn()) {
     header('Location: /Pages/Account/Login.php');
@@ -18,9 +18,9 @@ $userDetails = $users->GetUserInfoById($userId);
 
 $errorMessage = $users->EditUser();
 
-include($_SERVER['DOCUMENT_ROOT'] . '/Includes/Header.php');
-include($_SERVER['DOCUMENT_ROOT'] . '/Includes/Container.php');
-include($_SERVER['DOCUMENT_ROOT'] . '/Pages/Shared/Menu.php');
+include(__DIR__ . '/../../Includes/Header.php');
+include(__DIR__ . '/../../Includes/Container.php');
+include(__DIR__ . '/../../Pages/Shared/Menu.php');
 ?>
 
 <div class="card mt-5">
@@ -99,4 +99,4 @@ include($_SERVER['DOCUMENT_ROOT'] . '/Pages/Shared/Menu.php');
     </form>
 </div>
 
-<?php include($_SERVER['DOCUMENT_ROOT'] . '/Includes/Footer.php'); ?>
+<?php include(__DIR__ . '/../../Includes/Footer.php'); ?>

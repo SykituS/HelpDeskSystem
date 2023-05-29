@@ -1,5 +1,5 @@
 <?php
-include($_SERVER['DOCUMENT_ROOT'] . '/Configuration/Init.php');
+include(__DIR__ . '/../../Configuration/Init.php');
 
 if (!$users->isLoggedIn()) {
     header('Location: /Pages/Account/Login.php');
@@ -8,9 +8,9 @@ if (!$users->isLoggedIn()) {
 $fullName = $_SESSION["UserFirstName"] . " " . $_SESSION["UserLastName"];
 $loggedUserData = $users->GetLoggedUserInfo();
 
-include($_SERVER['DOCUMENT_ROOT'] . '/Includes/Header.php');
-include($_SERVER['DOCUMENT_ROOT'] . '/Pages/Shared/Menu.php');
-include($_SERVER['DOCUMENT_ROOT'] . '/Includes/Container.php');
+include(__DIR__ . '/../../Includes/Header.php');
+include(__DIR__ . '/../../Includes/Container.php');
+include(__DIR__ . '/../../Pages/Shared/Menu.php');
 ?>
 <div class="container mt-2 px-4 py-5">
     <div class="row">
@@ -49,4 +49,4 @@ include($_SERVER['DOCUMENT_ROOT'] . '/Includes/Container.php');
         </div>
     </div>
 </div>
-<?php include($_SERVER['DOCUMENT_ROOT'] . '/Includes/Footer.php'); ?>
+<?php include(__DIR__ . '/../../Includes/Footer.php'); ?>

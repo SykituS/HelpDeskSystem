@@ -7,11 +7,12 @@ define("User", $user);
 define("Password", $password);
 define("Database", $database);
 define("Prefix", $prefix);
+define("BaseUrl", $baseUrl);
 
-require($_SERVER['DOCUMENT_ROOT'] . '/Class/Database.php');
-require($_SERVER['DOCUMENT_ROOT'] . '/Class/Users.php');
-require($_SERVER['DOCUMENT_ROOT'] . '/Class/Departments.php');
-require($_SERVER['DOCUMENT_ROOT'] . '/Class/Tickets.php');
+require(__DIR__ . '/../Class/Database.php');
+require(__DIR__ . '/../Class/Users.php');
+require(__DIR__ . '/../Class/Departments.php');
+require(__DIR__ . '/../Class/Tickets.php');
 
 $database = new Database;
 $users = new Users;

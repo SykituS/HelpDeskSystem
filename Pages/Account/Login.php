@@ -1,15 +1,15 @@
 <?php 
-include ($_SERVER['DOCUMENT_ROOT'].'/Configuration/Init.php');
+include (__DIR__.'/../../Configuration/Init.php');
 
 if($users->isLoggedIn()) {
-	header('Location: /Pages/Tickets/TicketsList.php');
+	header('Location: /Pages/MainPage/Main.php');
 }
 
 $errorMessage = $users->Login();
 
-include($_SERVER['DOCUMENT_ROOT'].'/Includes/Header.php');
+include(__DIR__.'/../../Includes/Header.php');
+include(__DIR__.'/../../Includes/Container.php');
 ?>
-<?php include($_SERVER['DOCUMENT_ROOT'].'/Includes/Container.php');?>
 <div class="card mt-5">
     <div class="card-header text-center pt-3">
         <h1 class="h3 mb-3 fw-normal">Login to Help Desk</h1>
@@ -43,4 +43,4 @@ include($_SERVER['DOCUMENT_ROOT'].'/Includes/Header.php');
         </div>
     </form>
 </div>
-<?php include($_SERVER['DOCUMENT_ROOT'].'/Includes/Footer.php');?>
+<?php include(__DIR__.'/../../Includes/Footer.php');?>

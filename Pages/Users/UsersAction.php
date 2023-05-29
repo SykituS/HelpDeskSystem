@@ -1,5 +1,5 @@
 <?php
-require($_SERVER['DOCUMENT_ROOT'].'/Configuration/Init.php');
+require(__DIR__.'/../../Configuration/Init.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
   if (isset($_GET['UserId'])) {
