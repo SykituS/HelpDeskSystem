@@ -2,7 +2,7 @@
 include (__DIR__.'/../../Configuration/Init.php');
 
 if($users->isLoggedIn()) {
-	header('Location: /Pages/MainPage/Main.php');
+	header('Location: '.BaseUrl.'/Pages/MainPage/Main.php');
 }
 
 $errorMessage = $users->Login();

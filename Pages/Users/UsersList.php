@@ -2,11 +2,11 @@
 include(__DIR__ . '/../../Configuration/Init.php');
 
 if (!$users->isLoggedIn()) {
-    header('Location: /Pages/Account/Login.php');
+    header('Location: '.BaseUrl.'/Pages/Account/Login.php');
 }
 
 if (!$users->HaveAdminPermissions()) {
-    header('Location: /Pages/Account/Login.php');
+    header('Location: '.BaseUrl.'/Pages/Account/Login.php');
 }
 
 include(__DIR__ . '/../../Includes/Header.php');
@@ -76,7 +76,7 @@ if (isset($_SESSION["SuccessMessage"])) {
                                 ?>
                             </ul>
                             <div class="text-end">
-                                <a href="/Pages/Users/CreateNewUser.php" class="btn btn-outline-primary">Add new user</a>
+                                <a href="<?php echo BaseUrl; ?>/Pages/Users/CreateNewUser.php" class="btn btn-outline-primary">Add new user</a>
                             </div>
                         </nav>
                     </div>

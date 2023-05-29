@@ -2,6 +2,8 @@
 session_start();
 include 'Config.php';
 
+
+
 define("Host", $host);
 define("User", $user);
 define("Password", $password);

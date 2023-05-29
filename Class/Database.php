@@ -4,10 +4,10 @@ class Database
 {
 
     //Tables name
-    public $userTable = Prefix . "Users";
-    public $departmentTable = Prefix . "Departments";
-    public $ticketsTable = Prefix . "Tickets";
-    public $ticketsResponseTable = Prefix . "TicketResponse";
+    public $userTable = "`".Prefix . "Users`";
+    public $departmentTable = "`".Prefix . "Departments`";
+    public $ticketsTable = "`".Prefix . "Tickets`";
+    public $ticketsResponseTable = "`".Prefix . "TicketResponse`";
 
     //Pagination settings
     public $recordsPerPage = 15;

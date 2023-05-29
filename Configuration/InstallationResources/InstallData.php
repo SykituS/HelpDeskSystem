@@ -26,7 +26,7 @@
 <body class="d-flex flex-column min-vh-100">
     <div class="container">
         <div class="card text-center">
-            <form name="installBaseDataForm" action="/Install.php" method="POST">
+            <form name="installBaseDataForm" action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="POST">
                 <div class="card-header">Instalator systemu HelpDesk | Dane aplikacji</div>
                 <div class="card-body">
                     <div class="">

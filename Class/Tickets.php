@@ -438,11 +438,16 @@ class Tickets extends Database
         // Updating ticket data to show new message for other side
         $sqlUpdate = "UPDATE " . $this->ticketsTable . " SET `IsReadByUser`=?, `IsReadByHelpDesk`=? WHERE `UniqueId` = ?;";
         $stmt = mysqli_prepare($this->context, $sqlUpdate);
-        if ($_SESSION["Role"] == "HelpDesk" || $_SESSION["Role"] == "Admin") {
-            mysqli_stmt_bind_param($stmt, "sss", 0, 1, $uid);
-        } else {
-            mysqli_stmt_bind_param($stmt, "sss", 1, 0, $uid);
+        
+        $isReadByUser = 0;
+        $isReadByHelpDesk = 1;
+
+        if ($_SESSION["Role"] != "HelpDesk" && $_SESSION["Role"] != "Admin") {
+            $isReadByUser = 1;
+            $isReadByHelpDesk = 0;
         }
+
+        mysqli_stmt_bind_param($stmt, "sss", $isReadByUser, $isReadByHelpDesk, $uid);
         mysqli_stmt_execute($stmt);
 
         // Set success message and refresh page to prevent sending form again

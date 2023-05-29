@@ -146,16 +146,16 @@ function ImportDataFromForm()
         \$companyPhone=\"" . $_POST['CompanyPhone'] . "\";
         ";
     if (is_writable(configFile)) {
-        if (!$uchwyt = fopen(configFile, 'a')) {
+        if (!$file = fopen(configFile, 'a')) {
             echo "Nie mogę otworzyć pliku (" . configFile . ")";
             exit;
         }
-        if (fwrite($uchwyt, $config) == FALSE) {
+        if (fwrite($file, $config) == FALSE) {
             echo "Nie mogę zapisać do pliku (" . configFile . ")";
             exit;
         }
         echo "Sukces, zapisano (<code>konfigurację</code>) do pliku (" . configFile . "). Strona zostanie odświeżona";
-        fclose($uchwyt);
+        fclose($file);
         $_SESSION["Step"] = 6;
         echo "<script>
             setTimeout(function() {

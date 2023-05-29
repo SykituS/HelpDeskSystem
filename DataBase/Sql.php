@@ -4,7 +4,7 @@ $create[] = "CREATE TABLE `" . $prefix . "Departments` (
   `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(255) NOT NULL,
   PRIMARY KEY (`Id`)
- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci";
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;";
 
 $create[] .= "CREATE TABLE `" . $prefix . "TicketResponse` (
   `Id` int NOT NULL AUTO_INCREMENT,
@@ -13,7 +13,7 @@ $create[] .= "CREATE TABLE `" . $prefix . "TicketResponse` (
   `ResponseBy` int NOT NULL,
   `CreatedOn` datetime NOT NULL,
   PRIMARY KEY (`Id`)
- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci";
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;";
 
 $create[] .= "CREATE TABLE `" . $prefix . "Tickets` (
  `Id` int NOT NULL AUTO_INCREMENT,
@@ -31,7 +31,7 @@ $create[] .= "CREATE TABLE `" . $prefix . "Tickets` (
  `AssignedTechnicalId` int DEFAULT NULL,
  PRIMARY KEY (`Id`),
  UNIQUE KEY `UniqueId` (`UniqueId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;";
 
 $create[] .= "CREATE TABLE `" . $prefix . "Users` (
   `Id` int NOT NULL AUTO_INCREMENT,
@@ -44,4 +44,4 @@ $create[] .= "CREATE TABLE `" . $prefix . "Users` (
   `DepartmentId` int NOT NULL,
   `CreatedOn` date NOT NULL,
   PRIMARY KEY (`Id`)
- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci";
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;";

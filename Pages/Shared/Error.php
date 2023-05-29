@@ -3,7 +3,7 @@ include(__DIR__ . '/../../Configuration/Init.php');
 
 include(__DIR__ . '/../../Includes/Header.php');
 include(__DIR__ . '/../../Includes/Container.php');
-include(__DIR__ . '/../../Pages/Shared/Menu.php');
+include('Menu.php');
 
 ?>
 <div class="card text-center mt-5">

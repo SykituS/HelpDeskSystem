@@ -2,15 +2,15 @@
 include(__DIR__ . '/../../Configuration/Init.php');
 
 if (!$users->isLoggedIn()) {
-    header('Location: /Pages/Account/Login.php');
+    header('Location: '.BaseUrl.'/Pages/Account/Login.php');
 }
 
 if (!$users->HaveAdminPermissions()) {
-    header('Location: /Pages/Account/Login.php');
+    header('Location: '.BaseUrl.'/Pages/Account/Login.php');
 }
 
 if (!isset($_GET["Id"]))
-    header('Location: /Pages/Shared/Error.php');
+    header('Location: '.BaseUrl.'/Pages/Shared/Error.php');
 
 
 $userDetails = $users->GetUserInfoById($_GET["Id"]);

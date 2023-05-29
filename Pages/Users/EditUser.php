@@ -2,21 +2,22 @@
 include(__DIR__ . '/../../Configuration/Init.php');
 
 if (!$users->isLoggedIn()) {
-    header('Location: /Pages/Account/Login.php');
+    header('Location: '.BaseUrl.'/Pages/Account/Login.php');
 }
 
 if (!$users->HaveAdminPermissions()) {
-    header('Location: /Pages/Account/Login.php');
+    header('Location: '.BaseUrl.'/Pages/Account/Login.php');
 }
 
 if (!isset($_GET["Id"])) {
-    header('Location: /Pages/Shared/Error.php');
+    header('Location: '.BaseUrl.'/Pages/Shared/Error.php');
 }
 
 $userId = $_GET["Id"];
 $userDetails = $users->GetUserInfoById($userId);
 
 $errorMessage = $users->EditUser();
+$email = $userDetails["Email"];
 
 include(__DIR__ . '/../../Includes/Header.php');
 include(__DIR__ . '/../../Includes/Container.php');
@@ -34,19 +35,19 @@ include(__DIR__ . '/../../Pages/Shared/Menu.php');
             <div class="text-center">
                 <div class="">
                     <div class="form-floating">
-                        <input type="Email" value="<? echo $userDetails["Email"]; ?>" class="form-control" id="Email" name="Email" placeholder="name@example.com" required>
+                        <input type="Email" value="<?php echo $userDetails["Email"]; ?>" class="form-control" id="Email" name="Email" placeholder="name@example.com" required>
                         <label for="Email">Email address</label>
                     </div>
                 </div>
                 <div class="mt-3">
                     <div class="form-floating">
-                        <input type="text" value="<? echo $userDetails["FirstName"]; ?>" class="form-control" id="FirstName" name="FirstName" placeholder="First name" required>
+                        <input type="text" value="<?php echo $userDetails["FirstName"]; ?>" class="form-control" id="FirstName" name="FirstName" placeholder="First name" required>
                         <label for="FirstName">First name</label>
                     </div>
                 </div>
                 <div class="mt-3">
                     <div class="form-floating">
-                        <input type="text" value="<? echo $userDetails["LastName"]; ?>" class="form-control" id="LastName" name="LastName" placeholder="Last name" required>
+                        <input type="text" value="<?php echo $userDetails["LastName"]; ?>" class="form-control" id="LastName" name="LastName" placeholder="Last name" required>
                         <label for="LastName">Last name</label>
                     </div>
                 </div>

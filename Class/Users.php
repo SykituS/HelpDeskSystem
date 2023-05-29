@@ -59,8 +59,17 @@ class Users extends Database
             $sqlQuery = "SELECT * FROM " . $this->userTable . "
                         WHERE email=? AND status = 1";
 
+            if (!$this->context) {
+                // Error connecting to the database
+                die("Connection failed: " . mysqli_connect_error());
+            }
             // Prevent SqlInjection using params
             $stmt = mysqli_prepare($this->context, $sqlQuery);
+
+            if (!$stmt) {
+                // Error preparing the statement
+                die("Statement preparation failed: " . mysqli_error($this->context));
+            }
             mysqli_stmt_bind_param($stmt, "s", $email);
             mysqli_stmt_execute($stmt);
 

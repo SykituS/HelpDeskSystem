@@ -2,7 +2,7 @@
 include(__DIR__ . '/../../Configuration/Init.php');
 
 if (!$users->isLoggedIn()) {
-    header('Location: /Pages/Account/Login.php');
+    header('Location: '.BaseUrl.'/Pages/Account/Login.php');
 }
 
 include(__DIR__ . '/../../Includes/Header.php');

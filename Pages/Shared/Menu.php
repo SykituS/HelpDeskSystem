@@ -11,7 +11,7 @@
 			<div class="collapse navbar-collapse">
 				<ul class="navbar-nav">
 					<li class="nav-item">
-						<a class="nav-link" href="/Pages/MainPage/Main.php">
+						<a class="nav-link" href="<?php echo BaseUrl; ?>/Pages/MainPage/Main.php">
 							<div class="icon-container">
 								<span title="home"><i data-feather="home"></i></span>
 								<span class="icon-text">Main menu</span>
@@ -20,7 +20,7 @@
 					</li>
 					<?php if ($users->HaveAdminPermissions()) : ?>
 						<li class="nav-item">
-							<a class="nav-link" href="/Pages/Departments/DepartmentsList.php">
+							<a class="nav-link" href="<?php echo BaseUrl; ?>/Pages/Departments/DepartmentsList.php">
 								<div class="icon-container">
 									<span title="Departments"><i class="icon-icon" data-feather="grid"></i></span>
 									<span class="icon-text">Departments</span>
@@ -28,7 +28,7 @@
 							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="/Pages/Users/UsersList.php">
+							<a class="nav-link" href="<?php echo BaseUrl; ?>/Pages/Users/UsersList.php">
 								<div class="icon-container">
 									<span title="Users"><i data-feather="users"></i></span>
 									<span class="icon-text">Users</span>
@@ -36,7 +36,7 @@
 							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="/Pages/Tickets/TicketsListAdmin.php">
+							<a class="nav-link" href="<?php echo BaseUrl; ?>/Pages/Tickets/TicketsListAdmin.php">
 								<div class="icon-container">
 									<span title="Users"><i data-feather="layers"></i></span>
 									<span class="icon-text">Admin ticket view</span>
@@ -46,7 +46,7 @@
 					<?php endif ?>
 					<?php if ($users->HaveHelpDeskPermissions()) : ?>
 						<li class="nav-item">
-							<a class="nav-link" href="/Pages/Tickets/TicketsListHelpDesk.php">
+							<a class="nav-link" href="<?php echo BaseUrl; ?>/Pages/Tickets/TicketsListHelpDesk.php">
 								<div class="icon-container">
 									<span title="Helpdesk"><i data-feather="globe"></i></span>
 									<span class="icon-text">Helpdesk</span>
@@ -55,7 +55,7 @@
 						</li>
 					<?php endif ?>
 					<li class="nav-item">
-						<a class="nav-link" href="/Pages/Tickets/TicketsList.php">
+						<a class="nav-link" href="<?php echo BaseUrl; ?>/Pages/Tickets/TicketsList.php">
 							<div class="icon-container">
 								<span title="Tickets"><i data-feather="list"></i></span>
 								<span class="icon-text">Tickets</span>
@@ -71,7 +71,7 @@
 			<div class="collapse navbar-collapse">
 				<ul class="navbar-nav">
 					<li class="nav-item">
-						<a href="../Account/Logout.php">
+						<a href="<?php echo BaseUrl; ?>Pages/Account/Logout.php">
 							<div class="icon-container me-3">
 								<span title="Logout"><i data-feather="log-out"></i></span>
 								<span class="icon-text">Logout</span>

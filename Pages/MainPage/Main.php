@@ -2,7 +2,7 @@
 include(__DIR__ . '/../../Configuration/Init.php');
 
 if (!$users->isLoggedIn()) {
-    header('Location: /Pages/Account/Login.php');
+    header('Location: '.BaseUrl.'/Pages/Account/Login.php');
 }
 
 $fullName = $_SESSION["UserFirstName"] . " " . $_SESSION["UserLastName"];
@@ -25,7 +25,7 @@ include(__DIR__ . '/../../Pages/Shared/Menu.php');
                         <div>
                             <h3 class="fs-2">Create new ticket</h3>
                             <p></p>
-                            <a href="/Pages/Tickets/CreateNewTicket.php" class="btn btn-primary">
+                            <a href="<?php echo BaseUrl; ?>/Pages/Tickets/CreateNewTicket.php" class="btn btn-primary">
                                 Create new ticket
                             </a>
 
@@ -39,7 +39,7 @@ include(__DIR__ . '/../../Pages/Shared/Menu.php');
                             <h3 class="fs-2">See list of tickets</h3>
                             <p>Number of opened tickets: <span class="badge text-bg-success"><?php echo $loggedUserData["OpenedTickets"]; ?></span></p>
                             <p>Number of closed tickets: <span class="badge text-bg-danger"><?php echo $loggedUserData["ClosedTickets"]; ?></span></p>
-                            <a href="/Pages/Tickets/TicketsList.php" class="btn btn-primary">
+                            <a href="<?php echo BaseUrl; ?>/Pages/Tickets/TicketsList.php" class="btn btn-primary">
                                 List of tickets
                             </a>
                         </div>
