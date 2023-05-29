@@ -135,8 +135,6 @@ if (isset($_SESSION["SuccessMessage"])) {
                                 $numerator++;
                             }
                             ?>
-
-
                         </tbody>
                     </table>
                 </div>

@@ -135,7 +135,7 @@ function GenerateInstallDataForm()
 
 function ImportDataFromForm()
 {
-    $config = "\n# konfiguracja aplikacji\n
+    $config = "\n# App configuration: \n
         \$baseUrl=\"" . $_POST['BaseUrl'] . "\";
         \$applicationName=\"" . $_POST['ApplicationName'] . "\";
         \$dateOfCreation=\"" . $_POST['DateOfCreation'] . "\";

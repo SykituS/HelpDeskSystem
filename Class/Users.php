@@ -280,7 +280,7 @@ class Users extends Database
 
     public function ChangeActiveStatusForUser($userId)
     {
-        $sqlUpdate = "UPDATE `" . $this->userTable . "` SET `Status`= not `Status` WHERE `Id` = ?";
+        $sqlUpdate = "UPDATE " . $this->userTable . " SET `Status`= not `Status` WHERE `Id` = ?";
 
         // Prevent SqlInjection using params
         $stmt = mysqli_prepare($this->context, $sqlUpdate);
@@ -325,7 +325,7 @@ class Users extends Database
 
         $sqlUpdate = "";
         if ($_POST["Password"] == '') {
-            $sqlUpdate = "UPDATE `" . $this->userTable . "` SET `Email`=?, `FirstName`=?, `LastName`=?, `Role`=?, `DepartmentId`=? WHERE `Id`=?";
+            $sqlUpdate = "UPDATE " . $this->userTable . " SET `Email`=?, `FirstName`=?, `LastName`=?, `Role`=?, `DepartmentId`=? WHERE `Id`=?";
             $stmt = mysqli_prepare($this->context, $sqlUpdate);
             mysqli_stmt_bind_param($stmt, "ssssss", $email, $firstName, $lastName, $role, $department, $_POST["Id"]);
         } else {
@@ -336,7 +336,7 @@ class Users extends Database
             }
 
             $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-            $sqlUpdate = "UPDATE `" . $this->userTable . "` SET `Email`=?, `Password`=?, `FirstName`=?, `LastName`=?, `Role`=?, `DepartmentId`=? WHERE `Id`=?";
+            $sqlUpdate = "UPDATE " . $this->userTable . " SET `Email`=?, `Password`=?, `FirstName`=?, `LastName`=?, `Role`=?, `DepartmentId`=? WHERE `Id`=?";
             $stmt = mysqli_prepare($this->context, $sqlUpdate);
             mysqli_stmt_bind_param($stmt, "ssssss", $email, $passwordHash, $firstName, $lastName, $role, $department, $_POST["Id"]);
         }
