@@ -69,14 +69,12 @@ include(__DIR__ . '/../../Pages/Shared/Menu.php');
                             <div class="d-flex">
                                 <div class="border-start border-3 pe-2 <?php echo $styleForBorder ?>"></div>
                                 <div class="ms-3">
-                                    <h4>Created on:</h4>
+                                    <h4>Created on</h4>
                                     <p><?php echo $userDetails["CreatedOn"]; ?></p>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
                 </div>
             </div>
             <div class="card-footer"></div>
