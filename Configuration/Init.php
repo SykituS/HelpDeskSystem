@@ -2,16 +2,6 @@
 session_start();
 include 'Config.php';
 
-if (!$link) {
-    if(file_exists(BaseUrl.'/Install.php')) {
-        header('Location: '.BaseUrl.'/Install.php');
-    } else {
-        http_response_code(503);
-        die("Service unavailable");
-    }
-    die("Failed to connect");
-}
-
 define("Host", $host);
 define("User", $user);
 define("Password", $password);

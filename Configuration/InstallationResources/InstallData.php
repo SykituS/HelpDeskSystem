@@ -1,3 +1,28 @@
+<?php
+
+function urlOrigin( $s, $use_forwarded_host = false )
+{
+    $ssl      = ( ! empty( $s['HTTPS'] ) && $s['HTTPS'] == 'on' );
+    $sp       = strtolower( $s['SERVER_PROTOCOL'] );
+    $protocol = substr( $sp, 0, strpos( $sp, '/' ) ) . ( ( $ssl ) ? 's' : '' );
+    $port     = $s['SERVER_PORT'];
+    $port     = ( ( ! $ssl && $port=='80' ) || ( $ssl && $port=='443' ) ) ? '' : ':'.$port;
+    $host     = ( $use_forwarded_host && isset( $s['HTTP_X_FORWARDED_HOST'] ) ) ? $s['HTTP_X_FORWARDED_HOST'] : ( isset( $s['HTTP_HOST'] ) ? $s['HTTP_HOST'] : null );
+    $host     = isset( $host ) ? $host : $s['SERVER_NAME'] . $port;
+    return $protocol . '://' . $host;
+}
+
+function fullUrl( $s, $use_forwarded_host = false )
+{
+    return urlOrigin( $s, $use_forwarded_host ) . $s['REQUEST_URI'];
+}
+
+$url = pathinfo(fullUrl( $_SERVER ));
+
+$baseUrl = $url['dirname']."/";
+
+?>
+
 <!-- Header file -->>
 <!DOCTYPE html>
 <html>
@@ -38,7 +63,7 @@
                     </div>
                     <div class="mt-3">
                         <div class="form-floating">
-                            <input type="Text" class="form-control" id="BaseUrl" name="BaseUrl" placeholder="BaseUrl" required>
+                            <input type="Text" class="form-control" id="BaseUrl" name="BaseUrl" value="<?php echo $baseUrl; ?>" placeholder="BaseUrl" required>
                             <label for="BaseUrl">Adres serwisu</label>
                             <p class="card-text text-start"><small class="text-muted">Adres domenowy</small></p>
                         </div>

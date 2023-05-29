@@ -59,8 +59,8 @@
 
     // Array of Death Star image URLs
     var Images = [
-      '/Resources/DeathStar.png',
-      '/Resources/xwing.png',
+      '<?php echo BaseUrl; ?>/Resources/DeathStar.png',
+      '<?php echo BaseUrl; ?>/Resources/xwing.png',
       // Add more image URLs as needed
     ];
 

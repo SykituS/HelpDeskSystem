@@ -19,6 +19,12 @@ class Database
             $connection = new mysqli(Host, User, Password, Database);
 
             if ($connection->connect_error) {
+                if(file_exists(BaseUrl.'/Install.php')) {
+                    header('Location: '.BaseUrl.'/Install.php');
+                } else {
+                    http_response_code(503);
+                    die("Service unavailable");
+                }
                 die("Connection to MySql failed: " . $connection->connect_error);
             } else {
                 $context = $connection;
@@ -27,16 +33,7 @@ class Database
         return $context;
     }
 
-    public function checkDbConnection()
-    {
-        $connection = new mysqli(Host, User, Password, Database);
-
-        if ($connection->connect_error) {
-            return false;
-        }
-        return true;
-    }
-
+    // Function for pagination on pages
     public function retrivePageInformations($tableName)
     {
 
@@ -60,6 +57,7 @@ class Database
         return $pageInformation;
     }
 
+    //Dev function that shows value in console
     function console_log($output, $with_script_tags = true)
     {
         $js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) . ');';
