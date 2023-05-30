@@ -4,10 +4,10 @@ class Database
 {
 
     //Tables name
-    public $userTable = "`".Prefix . "Users`";
-    public $departmentTable = "`".Prefix . "Departments`";
-    public $ticketsTable = "`".Prefix . "Tickets`";
-    public $ticketsResponseTable = "`".Prefix . "TicketResponse`";
+    public $userTable = "`" . Prefix . "Users`";
+    public $departmentTable = "`" . Prefix . "Departments`";
+    public $ticketsTable = "`" . Prefix . "Tickets`";
+    public $ticketsResponseTable = "`" . Prefix . "TicketResponse`";
 
     //Pagination settings
     public $recordsPerPage = 15;
@@ -19,8 +19,8 @@ class Database
             $connection = new mysqli(Host, User, Password, Database);
 
             if ($connection->connect_error) {
-                if(file_exists(BaseUrl.'/Install.php')) {
-                    header('Location: '.BaseUrl.'/Install.php');
+                if (file_exists(__DIR__ . '/../Install.php')) {
+                    header('Location: ' . BaseUrl . '/Install.php');
                 } else {
                     http_response_code(503);
                     die("Service unavailable");
