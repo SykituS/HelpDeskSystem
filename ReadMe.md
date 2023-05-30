@@ -1,7 +1,6 @@
 # Tytuł projektu
 
-//TODO:
-Help desk
+Projekt “Help Desk” ma za zadanie ułatwić komunikację między użytkownikami a osobami z danych działów odpowiedzialnym za pomoc w razie awarii czy też innych problemów. Aplikacja nie dosyć, że ułatwi kontakt i przeprowadzanie konwersacji z odpowiednimi osobami, to dodatkowo umożliwi nam na trzymanie i przeglądanie historii złożonych przez nas zgłoszeń lub też zgłoszeń w których braliśmy udział lub je do siebie przypisaliśmy.
 
 ## Wymagania systemowe
 
@@ -18,11 +17,11 @@ Instrukcja instalacji projektu, w tym do jakich plików i do jakich katalogów n
 
 - **Mateusz Jaruga**
 - _nr album: 392803_
-- _mjaruga_
+- _Login: mjaruga_
 
 - **Mateusz Kalenik**
-- _nr album: nr_
-- _login z manticory_
+- _nr album: 392799_
+- _Login: mati9821_
 
 ## Wykorzystane zewnętrzne biblioteki
 
