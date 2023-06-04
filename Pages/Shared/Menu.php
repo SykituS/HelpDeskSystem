@@ -71,7 +71,7 @@
 			<div class="collapse navbar-collapse">
 				<ul class="navbar-nav">
 					<li class="nav-item">
-						<a href="<?php echo BaseUrl; ?>Pages/Account/Logout.php">
+						<a href="<?php echo BaseUrl; ?>/Pages/Account/Logout.php">
 							<div class="icon-container me-3">
 								<span title="Logout"><i data-feather="log-out"></i></span>
 								<span class="icon-text">Logout</span>

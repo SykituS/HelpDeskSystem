@@ -151,7 +151,7 @@ $baseUrl = $url['dirname'];
                     </div>
                 </div>
                 <div class="mt-3">
-                    <div class="form-floating input-group">
+                    <div class="form-floating">
                         <input type="Password" class="form-control" id="ConfirmPassword" name="ConfirmPassword" placeholder="ConfirmPassword" required>
                         <label for="ConfirmPassword">Potwierdz hasło</label>
                         <p class="card-text text-start"><small class="text-muted"></small></p>
