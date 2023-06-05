@@ -10,7 +10,7 @@ Projekt “Help Desk” ma za zadanie ułatwić komunikację między użytkownik
 
 ## Instalacja
 
-Po wrzuceniu strony na serwer należy udać się na adres url naszej strony gdzie powinna się znajdować, zostanie uruchomiony wówczas instalator strony, w przypadku gdy instalator się nie uruchamia upewnij się że plik "Install.php" znajduje się w tej samej lokalizacji co index.php, wówczas przejdź ręcznie do instalatora poprzez podanie url */Install.php gdzie * to jest bazowy adres url naszej strony.
+Po wrzuceniu strony na serwer należy udać się na adres url naszej strony gdzie powinna się znajdować, zostanie uruchomiony wówczas instalator strony, w przypadku gdy instalator się nie uruchamia upewnij się że plik "Install.php" znajduje się w tej samej lokalizacji co index.php, wówczas przejdź ręcznie do instalatora poprzez podanie url _/Install.php gdzie _ to jest bazowy adres url naszej strony.
 
 Przykład:
 Przypadek 1: automatyczne uruchomienie instalatora:
@@ -26,13 +26,15 @@ Uruchomienie instalatora
 Przed przejściem do procesu instalacji upewnij się że utworzona została baza danych w technologii MySQL która będzie przetrzymywała dane na temat systemu HelpDesk.
 
 ### Proces instalacji:
+
 Instalator składa się z 7 kroków
+
 1. Rozpoczęcie instalacji: tutaj sprawdzane jest czy istnieje plik Config.php, w przypadku jego braku wymagane jest jego utworzenie, jeśli plik istnieje sprawdzone zostanie czy plik ten posiada odpowiednie uprawnienia, wymagane jest aby można było odczytywać i zapisywać plik Config.php.
-Jeśli te warunki są spełniane instalator uruchomi krok 2
+   Jeśli te warunki są spełniane instalator uruchomi krok 2
 2. Formularz konfiguracji bazy danych, tutaj będzie wymagane podanie nazwy wcześniej utworzonej bazy danych, serwera na którym ta baza się znajduje, login i hasło użytkownika bazy danych który ma możliwość tworzenia tabel, dodawania, modyfikacji danych do tabel. Możliwe też jest dodanie prefix'a dla tabel w bazie.
 3. Zaimportowane zostają tutaj tabele dla bazy danych, użytkownik nic tutaj nie musi robić.
-4. Formularz konfiguracji aplikacji, wymagane tutaj jest podanie danych takie nazwa aplikacji, bazowy adres domenowy dla naszej aplikacji, datę powstania, wersja, nazwa firmy, ulica i miasto położenia firmy jak i numer telefonu firmowego. 
-Kolejnymi polami tego formularza jest utworzenie konta administratora, musimy podać imię i nazwisko administratora, nazwę działu w którym pracuje administrator, jego adres email oraz wymagane jest podanie hasła i jego potwierdzenie.
+4. Formularz konfiguracji aplikacji, wymagane tutaj jest podanie danych takie nazwa aplikacji, bazowy adres domenowy dla naszej aplikacji, datę powstania, wersja, nazwa firmy, ulica i miasto położenia firmy jak i numer telefonu firmowego.
+   Kolejnymi polami tego formularza jest utworzenie konta administratora, musimy podać imię i nazwisko administratora, nazwę działu w którym pracuje administrator, jego adres email oraz wymagane jest podanie hasła i jego potwierdzenie.
 5. Zapisywane są tutaj dane na temat konfiguracji aplikacji, dane te znajdziemy w pliku Config.php, użytkownik nic tutaj nie musi robić.
 6. Tworzone są tutaj nowe rekordy do bazy na temat oddziału w którym pracuje administrator i tworzone jest także konto administratora, użytkownik nic tutaj nie musi robić.
 7. Zakonczenie instalatora, możliwe jest usunięcie plików związane z instaltorem taki jak Install.php oraz folderu InstallationResources w folderze Configuration.
@@ -43,12 +45,14 @@ Instrukcja instalacji projektu, w tym do jakich plików i do jakich katalogów n
 ## Autorzy
 
 #### **Mateusz Jaruga**
-- __nr album: 392803__
-- __Login: mjaruga__
+
+- **nr album: 392803**
+- **Login: mjaruga**
 
 #### **Mateusz Kalenik**
-- __nr album: 392799__
-- __Login: mati9821__
+
+- **nr album: 392799**
+- **Login: mati9821**
 
 ## Wykorzystane zewnętrzne biblioteki
 
@@ -56,18 +60,3 @@ Instrukcja instalacji projektu, w tym do jakich plików i do jakich katalogów n
 - jquery 3.6.0
 - feather icons
 - Flastpicker -> Wybieranie daty
-
-## Development
-
-- Zainstaluj najnowszą wersję Docker'a
-- Uruchom Dockera
-- Pobierz repozytorium
-- Zkopiuj plik Docker-Compose.yml i php.Dockerfile do głównego katalogu
-- W głównym katalogu odpal konsole i uruchom komendę: docker-compose up
-- Po tym jak komenda się ukończy w Dcoker -> Containers powinien pojawić się item o nazwie "helpdesk" który powinien być uruchomiony
-  Oznacza to że pomyślnie utworzył się nowy Container z systemem LAMP, terminal można zamknąć i dla czytelności usunąć 2 skopiowane pliki z głównego katalogu
-
-## Adresy stron
-
-    url: localhost - otworzy nam stronę na systemie LAMP, jeśli pojawia się komunikat "Forbiden" to znaczy że nie ma w głównym katalogu pliku o nazwie index
-    url: localhost:8001 - strona MySQL login i hasło do strony: lamp_docker, lamp_docker
