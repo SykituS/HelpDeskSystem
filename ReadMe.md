@@ -1,62 +1,41 @@
-# Tytuł projektu
+# Project Title
 
-Projekt “Help Desk” ma za zadanie ułatwić komunikację między użytkownikami a osobami z danych działów odpowiedzialnym za pomoc w razie awarii czy też innych problemów. Aplikacja nie dosyć, że ułatwi kontakt i przeprowadzanie konwersacji z odpowiednimi osobami, to dodatkowo umożliwi nam na trzymanie i przeglądanie historii złożonych przez nas zgłoszeń lub też zgłoszeń w których braliśmy udział lub je do siebie przypisaliśmy.
+The "Help Desk" project is designed to facilitate communication between users and people from departments responsible for support in case of breakdowns or other issues. The application not only facilitates contact and conversations with the right people but also allows us to keep and review the history of requests we have submitted, participated in, or assigned to ourselves.
 
-## Wymagania systemowe
+## System Requirements
 
-- wersja apache'a: Apache/2.4.38 (Debian)
-- wersja PHP: 8.1.17
-- wersja MySQL: 8.0.33
+- Apache version: Apache/2.4.38 (Debian)
+- PHP version: 8.1.17
+- MySQL version: 8.0.33
 
-## Instalacja
+## Installation
 
-Po wrzuceniu strony na serwer należy udać się na adres url naszej strony gdzie powinna się znajdować, zostanie uruchomiony wówczas instalator strony, w przypadku gdy instalator się nie uruchamia upewnij się że plik "Install.php" znajduje się w tej samej lokalizacji co index.php, wówczas przejdź ręcznie do instalatora poprzez podanie url _/Install.php gdzie _ to jest bazowy adres url naszej strony.
+After uploading the site to the server, navigate to the URL where the site should be located. This should automatically start the site installer. If the installer does not start, ensure that the "Install.php" file is in the same location as index.php. Then manually start the installer by entering the URL _/Install.php, where _ is the base URL of our site.
 
-Przykład:
-Przypadek 1: automatyczne uruchomienie instalatora:
-Wejście na stronę: https://www.manticore.uni.lodz.pl/~mjaruga
-Automatyczne uruchomienie instalatora.
+Before beginning the installation process, ensure a MySQL database has been created to store information about the HelpDesk system.
 
-Przypadek 2: ręczne uruchomienie instalatora:
-Wejście na stronę: https://www.manticore.uni.lodz.pl/~mjaruga
-instalator się nie uruchamia
-Ręczne uruchomienie instalatora poprzez podanie url https://www.manticore.uni.lodz.pl/~mjaruga/Install.php
-Uruchomienie instalatora
+### Installation Process:
 
-Przed przejściem do procesu instalacji upewnij się że utworzona została baza danych w technologii MySQL która będzie przetrzymywała dane na temat systemu HelpDesk.
+The installer consists of 7 steps:
 
-### Proces instalacji:
+1. **Start of Installation**: This step checks if the Config.php file exists. If it does not, it's required to create it. If the file exists, its permissions are checked, and it must be readable and writable. If these conditions are met, the installer moves to step 2.
+2. **Database Configuration Form**: Here, you'll need to provide the name of the previously created database, the server where it is hosted, the database user's login and password, and the ability to create tables, add, and modify data. You can also add a table prefix for the database.
+3. **Database Tables Import**: At this stage, the database tables are imported, and the user doesn't have to do anything.
+4. **Application Configuration Form**: You'll need to provide details like the application name, the base domain address for the app, creation date, version, company name, company address, and phone number.
+   Additional fields in this form require creating an administrator account by providing the administrator's name, department, email address, and setting and confirming the password.
+5. **Application Configuration Storage**: Here, data on application configuration is saved to Config.php. The user doesn't have to do anything.
+6. **Creation of New Records**: At this step, records are created in the database for the department where the administrator works, and the administrator's account is created. The user doesn't have to do anything.
+7. **End of Installer**: At this stage, it's possible to delete files related to the installer, such as Install.php and the InstallationResources folder in the Configuration folder.
 
-Instalator składa się z 7 kroków
-
-1. Rozpoczęcie instalacji: tutaj sprawdzane jest czy istnieje plik Config.php, w przypadku jego braku wymagane jest jego utworzenie, jeśli plik istnieje sprawdzone zostanie czy plik ten posiada odpowiednie uprawnienia, wymagane jest aby można było odczytywać i zapisywać plik Config.php.
-   Jeśli te warunki są spełniane instalator uruchomi krok 2
-2. Formularz konfiguracji bazy danych, tutaj będzie wymagane podanie nazwy wcześniej utworzonej bazy danych, serwera na którym ta baza się znajduje, login i hasło użytkownika bazy danych który ma możliwość tworzenia tabel, dodawania, modyfikacji danych do tabel. Możliwe też jest dodanie prefix'a dla tabel w bazie.
-3. Zaimportowane zostają tutaj tabele dla bazy danych, użytkownik nic tutaj nie musi robić.
-4. Formularz konfiguracji aplikacji, wymagane tutaj jest podanie danych takie nazwa aplikacji, bazowy adres domenowy dla naszej aplikacji, datę powstania, wersja, nazwa firmy, ulica i miasto położenia firmy jak i numer telefonu firmowego.
-   Kolejnymi polami tego formularza jest utworzenie konta administratora, musimy podać imię i nazwisko administratora, nazwę działu w którym pracuje administrator, jego adres email oraz wymagane jest podanie hasła i jego potwierdzenie.
-5. Zapisywane są tutaj dane na temat konfiguracji aplikacji, dane te znajdziemy w pliku Config.php, użytkownik nic tutaj nie musi robić.
-6. Tworzone są tutaj nowe rekordy do bazy na temat oddziału w którym pracuje administrator i tworzone jest także konto administratora, użytkownik nic tutaj nie musi robić.
-7. Zakonczenie instalatora, możliwe jest usunięcie plików związane z instaltorem taki jak Install.php oraz folderu InstallationResources w folderze Configuration.
-
-//TODO:
-Instrukcja instalacji projektu, w tym do jakich plików i do jakich katalogów należy ustawić odpowiednie uprawnienia
-
-## Autorzy
+## Authors
 
 #### **Mateusz Jaruga**
 
-- **nr album: 392803**
-- **Login: mjaruga**
-
 #### **Mateusz Kalenik**
 
-- **nr album: 392799**
-- **Login: mati9821**
+## External Libraries Used
 
-## Wykorzystane zewnętrzne biblioteki
-
-- bootstrap 5.2.3
-- jquery 3.6.0
-- feather icons
-- Flastpicker -> Wybieranie daty
+- Bootstrap 5.2.3
+- jQuery 3.6.0
+- Feather Icons
+- Flatpickr -> Date Picker
